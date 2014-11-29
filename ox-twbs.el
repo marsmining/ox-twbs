@@ -783,7 +783,7 @@ in all modes you want.  Then, use the command
 ;;;; Table
 
 (defcustom org-twbs-table-default-attributes
-  '(:border "2" :cellspacing "0" :cellpadding "6" :rules "groups" :frame "hsides")
+  '(:class "table table-striped table-bordered table-hover table-condensed")
   "Default attributes and values which will be used in table tags.
 This is a plist where attributes are symbols, starting with
 colons, and values are strings.
