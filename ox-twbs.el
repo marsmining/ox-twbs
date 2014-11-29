@@ -936,7 +936,7 @@ Use utf-8 as the default value."
   :package-version '(Org . "8.0")
   :type 'coding-system)
 
-(defcustom org-twbs-doctype "xhtml-strict"
+(defcustom org-twbs-doctype "html5"
   "Document type definition to use for exported HTML files.
 Can be set with the in-buffer HTML_DOCTYPE property or for
 publishing, with :html-doctype."
