@@ -1243,7 +1243,10 @@ style information."
 (put 'org-twbs-head-include-default-style 'safe-local-variable 'booleanp)
 
 (define-obsolete-variable-alias 'org-twbs-style 'org-twbs-head "24.4")
-(defcustom org-twbs-head ""
+(defcustom org-twbs-head "
+<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css\">
+<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js\"></script>
+<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script>"
   "Org-wide head definitions for exported HTML files.
 
 This variable can contain the full HTML structure to provide a
