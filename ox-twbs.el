@@ -140,7 +140,7 @@
 (defvar org-twbs-format-table-no-css)
 (defvar htmlize-buffer-places)  ; from htmlize.el
 
-(defvar org-twbs--pre/postamble-class "status"
+(defvar org-twbs--pre/postamble-class ""
   "CSS class used for pre/postamble")
 
 (defconst org-twbs-doctype-alist
@@ -951,8 +951,8 @@ org-info.js for your website."
 
 (defcustom org-twbs-divs
   '((preamble  "div" "preamble")
-    (content   "div" "content")
-    (postamble "div" "postamble"))
+    (content   "div" "content" "container")
+    (postamble "footer" "postamble"))
   "Alist of the three section elements for HTML export.
 The car of each entry is one of 'preamble, 'content or 'postamble.
 The cdrs of each entry are the ELEMENT_TYPE and ID for each
@@ -1090,8 +1090,7 @@ precedence over this variable."
 (defcustom org-twbs-postamble-format
   '(("en" "<p class=\"author\">Author: %a (%e)</p>
 <p class=\"date\">Date: %d</p>
-<p class=\"creator\">%c</p>
-<p class=\"validation\">%v</p>"))
+<p class=\"creator\">%c</p>"))
   "Alist of languages and format strings for the HTML postamble.
 
 The first element of each list is the language code, as used for
@@ -1371,6 +1370,7 @@ a communication channel."
    (org-twbs--make-attribute-string
     (org-combine-plists
      (list :src source
+           :class "img-responsive"
 	   :alt (if (string-match-p "^ltxpng/" source)
 		    (org-twbs-encode-plain-text
 		     (org-find-text-property-in-string 'org-latex-src source))
@@ -1512,6 +1512,7 @@ INFO is a plist used as a communication channel."
 	   (replace-regexp-in-string
 	    "\"" "&quot;" (org-twbs-encode-plain-text str))))
 	(title (org-export-data (plist-get info :title) info))
+        (gid (plist-get info :gid))
 	(author (and (plist-get info :with-author)
 		     (let ((auth (plist-get info :author)))
 		       (and auth
@@ -1535,34 +1536,44 @@ INFO is a plist used as a communication channel."
 	 (concat "<!-- " org-twbs-metadata-timestamp-format " -->\n")))
      (format
       (if (org-twbs-html5-p info)
-	  (org-twbs-close-tag "meta" " charset=\"%s\"" info)
+	  (org-twbs-close-tag "meta" "charset=\"%s\"" info)
 	(org-twbs-close-tag
 	 "meta" " http-equiv=\"Content-Type\" content=\"text/html;charset=%s\""
 	 info))
       charset) "\n"
-     (org-twbs-close-tag "meta" " name=\"generator\" content=\"Org-mode\"" info)
+     (org-twbs-close-tag "meta" "name=\"generator\" content=\"Org-mode\"" info)
      "\n"
      (and (org-string-nw-p author)
 	  (concat
 	   (org-twbs-close-tag "meta"
-			       (format " name=\"author\" content=\"%s\""
+			       (format "name=\"author\" content=\"%s\""
 				       (funcall protect-string author))
 			       info)
 	   "\n"))
      (and (org-string-nw-p description)
 	  (concat
 	   (org-twbs-close-tag "meta"
-			       (format " name=\"description\" content=\"%s\"\n"
+			       (format "name=\"description\" content=\"%s\"\n"
 				       (funcall protect-string description))
 			       info)
 	   "\n"))
      (and (org-string-nw-p keywords)
 	  (concat
 	   (org-twbs-close-tag "meta"
-			       (format " name=\"keywords\" content=\"%s\""
+			       (format "name=\"keywords\" content=\"%s\""
 				       (funcall protect-string keywords))
 			       info)
-	   "\n")))))
+	   "\n"))
+     (when gid
+          (format "<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', '%s', 'auto');
+  ga('send', 'pageview');
+</script>\n" gid)))))
 
 (defun org-twbs--build-head (info)
   "Return information for the <head>..</head> of the HTML output.
@@ -1630,7 +1641,8 @@ used in the preamble or postamble."
     (?c . ,(plist-get info :creator))
     (?C . ,(let ((file (plist-get info :input-file)))
 	     (format-time-string org-twbs-metadata-timestamp-format
-				 (if file (nth 5 (file-attributes file))))))
+				 (if file (nth 5 (file-attributes file))
+				   (current-time)))))
     (?v . ,(or org-twbs-validation-link ""))))
 
 (defun org-twbs--build-pre/postamble (type info)
@@ -1652,6 +1664,7 @@ communication channel."
 		       (timestamp (cdr (assq ?T spec)))
 		       (validation-link (cdr (assq ?v spec))))
 		   (concat
+                    "<div>"
 		    (when (and (plist-get info :with-date)
 			       (org-string-nw-p date))
 		      (format "<p class=\"date\">%s: %s</p>\n"
@@ -1674,8 +1687,7 @@ communication channel."
 		       (format-time-string org-twbs-metadata-timestamp-format)))
 		    (when (plist-get info :with-creator)
 		      (format "<p class=\"creator\">%s</p>\n" creator))
-		    (format "<p class=\"validation\">%s</p>\n"
-			    validation-link))))
+                    "</div>")))
 		(t (format-spec
 		    (or (cadr (assoc
 			       (plist-get info :language)
@@ -1752,13 +1764,22 @@ holding export options."
    ;; Preamble.
    (org-twbs--build-pre/postamble 'preamble info)
    ;; Document contents.
-   (format "<%s id=\"%s\">\n"
+   (format "<%s id=\"%s\" class=\"%s\">\n"
 	   (nth 1 (assq 'content org-twbs-divs))
-	   (nth 2 (assq 'content org-twbs-divs)))
+           (nth 2 (assq 'content org-twbs-divs))
+           (nth 3 (assq 'content org-twbs-divs)))
+   ;; twbs row
+   "<div class=\"row\">"
+   "<div class=\"col-md-9\">"
    ;; Document title.
    (let ((title (plist-get info :title)))
      (format "<h1 class=\"title\">%s</h1>\n" (org-export-data (or title "") info)))
    contents
+   "</div>"
+   "<div class=\"col-md-3\">"
+   (org-twbs-toc 3 info)
+   "</div>"
+   "</div>"
    (format "</%s>\n"
 	   (nth 1 (assq 'content org-twbs-divs)))
    ;; Postamble.
@@ -1855,7 +1876,7 @@ is the language used for CODE, as a string, or nil."
 		       (funcall lang-mode)
 		       (insert code)
 		       ;; Fontify buffer.
-		       (org-font-lock-ensure)
+		       (font-lock-fontify-buffer)
 		       ;; Remove formatting on newline characters.
 		       (save-excursion
 			 (let ((beg (point-min))
@@ -1945,11 +1966,7 @@ contents as a string, or nil if it is empty."
 		     "div")))
     (when toc-entries
       (concat (format "<%s id=\"table-of-contents\">\n" outer-tag)
-	      (format "<h%d>%s</h%d>\n"
-		      org-twbs-toplevel-hlevel
-		      (org-twbs--translate "Table of Contents" info)
-		      org-twbs-toplevel-hlevel)
-	      "<div id=\"text-table-of-contents\">"
+	      "<div id=\"text-table-of-contents\" class=\"bs-docs-sidebar\">"
 	      (org-twbs--toc-text toc-entries)
 	      "</div>\n"
 	      (format "</%s>\n" outer-tag)))))
@@ -1972,9 +1989,9 @@ and value is its relative level, as an integer."
 	     (setq prev-level level)
 	     (concat
 	      (org-twbs--make-string
-	       times (cond ((> cnt 0) "\n<ul>\n<li>")
+	       times (cond ((> cnt 0) "\n<ul class=\"nav\">\n<li>")
 			   ((< cnt 0) "</li>\n</ul>\n")))
-	      (if (> cnt 0) "\n<ul>\n<li>" "</li>\n<li>")))
+	      (if (> cnt 0) "\n<ul class=\"nav\">\n<li>" "</li>\n<li>")))
 	   headline)))
       toc-entries "")
      (org-twbs--make-string (- prev-level start-level) "</li>\n</ul>\n"))))
@@ -3212,8 +3229,7 @@ contextual information."
 	     (org-twbs--make-attribute-string
 	      (org-combine-plists
 	       (and label (list :id (org-export-solidify-link-text label)))
-	       (and (not (org-twbs-html5-p info))
-		    (plist-get info :html-table-attributes))
+	       (plist-get info :html-table-attributes)
 	       (org-export-read-attribute :attr_html table))))
 	    (alignspec
 	     (if (and (boundp 'org-twbs-format-table-no-css)
@@ -3431,7 +3447,7 @@ Return output file name."
 (provide 'ox-twbs)
 
 ;; Local variables:
-;; generated-autoload-file: "org-loaddefs.el"
+;; generated-autoload-file: "org-twbs.el"
 ;; End:
 
 ;;; ox-twbs.el ends here
