@@ -1605,8 +1605,6 @@ INFO is a plist used as a communication channel."
 INFO is a plist used as a communication channel."
   (org-element-normalize-string
    (concat
-    (when (plist-get info :html-head-include-default-style)
-      (org-element-normalize-string org-twbs-style-default))
     (org-element-normalize-string (plist-get info :html-head))
     (org-element-normalize-string (plist-get info :html-head-extra))
     (when (and (plist-get info :html-htmlized-css-url)
@@ -1615,6 +1613,8 @@ INFO is a plist used as a communication channel."
 			  (format " rel=\"stylesheet\" href=\"%s\" type=\"text/css\""
 				  (plist-get info :html-htmlized-css-url))
 			  info))
+    (when (plist-get info :html-head-include-default-style)
+      (org-element-normalize-string org-twbs-style-default))
     (when (plist-get info :html-head-include-scripts) org-twbs-scripts))))
 
 (defun org-twbs--build-mathjax-config (info)
