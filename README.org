@@ -63,6 +63,6 @@ this to a key sequence.
 
 ** Example
 
-[[example/eg0.org]]
+An example [[example/eg0.org][org file]] and a [[example/eg0.jpg][screenshot]] of the rendered html.
 
 An example page can be seen here: [[http://clubctrl.com/org/prog/wolf.html]]
