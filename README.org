@@ -2,18 +2,61 @@
 
 ** Summary
 
-Export org-mode docs as HTML compatible with Twitter Bootstrap.
+Export [[http://orgmode.org/][org-mode]] docs as HTML compatible with [[http://getbootstrap.com/][Twitter Bootstrap]].
 
-** Status
+** Description
 
-Currently working on migrating my org-mode export configuration for
-TWBS (Twitter Bootstrap) to a reuseable proper elisp package.
+This library is derived from =ox-html.el=, which was written by
+Carsten Dominik and Jambunathan K, and is a part of [[http://www.gnu.org/software/emacs/][GNU Emacs]].
+
+This library includes a small set of changes to create a new HTML
+backend for the Org export engine, which uses Twitter Bootstrap for
+styling and the [[http://getbootstrap.com/javascript/#affix][Affix.js]] library for a dynamic table of contents.
+
+With no options, the publishing function =org-twbs-publish-to-html=
+will export HTML with jQuery and Bootstrap CSS and JS included via
+CDN.
 
 ** Install
 
-Put ~ox-twbs.el~ in your load path and require it. Open or create an
-org file and run ~org-twbs-export-to-html~. This will create an HTML
-file in the same dir as your org file.
+Put ~ox-twbs.el~ in your load path and require it.
+
+** Usage
+
+Open or create an org file and run ~org-twbs-export-to-html~. This
+will create an HTML file in the same dir as your org file.
+
+You will more likely want more control and automation of the export
+process. You can read [[http://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html][the org-mode docs]] on setting up your project. An
+example configuration might look like:
+
+#+BEGIN_SRC elisp
+  (setq org-publish-project-alist
+        '("org-notes"
+          :base-directory "~/org/"
+          :publishing-directory "~/public_html/"
+          :publishing-function org-twbs-publish-to-html
+          ))
+#+END_SRC
+
+Using the above config, you can run: =org-publish-all=
+
+And you might create a function which publishes the current buffers
+file and opens it in your system's default browser. You could then bind
+this to a key sequence.
+
+#+BEGIN_SRC elisp
+  (defun my-publish-function ()
+    (interactive)
+    (save-buffer)
+    (save-excursion (org-publish-file buffer-file-name))
+    (let* ((d (file-name-directory buffer-file-name))
+           (f (file-name-base buffer-file-name))
+           (p (when (string-match "^.*\\/\\([a-z]*\\)\\/" d)
+                (match-string 1 d))))
+      (browse-url
+       (concat "file:///Users/foo/public_html" p "/" f ".html"))))
+#+END_SRC
 
 ** Example
 
