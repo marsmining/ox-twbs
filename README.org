@@ -8,3 +8,13 @@ Export org as HTML compatible with Twitter Bootstrap.
 
 Currently working on migrating my org-mode export configuration for
 TWBS (Twitter Bootstrap) to a reuseable proper elisp package.
+
+** Install
+
+Put ~ox-twbs.el~ in your load path and require it. Open or create an
+org file and run `org-twbs-export-to-html`. This will create an HTML
+file in the same dir as your org file.
+
+** Example
+
+An example page can be seen here: [[http://clubctrl.com/org/prog/wolf.html]]
