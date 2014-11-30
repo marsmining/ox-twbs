@@ -2,7 +2,7 @@
 
 ** Summary
 
-Export org as HTML compatible with Twitter Bootstrap.
+Export org-mode docs as HTML compatible with Twitter Bootstrap.
 
 ** Status
 
