@@ -12,7 +12,7 @@ TWBS (Twitter Bootstrap) to a reuseable proper elisp package.
 ** Install
 
 Put ~ox-twbs.el~ in your load path and require it. Open or create an
-org file and run `org-twbs-export-to-html`. This will create an HTML
+org file and run ~org-twbs-export-to-html~. This will create an HTML
 file in the same dir as your org file.
 
 ** Example
