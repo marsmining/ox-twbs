@@ -131,6 +131,8 @@
     ;; Redefine regular options.
     (:creator "CREATOR" nil org-twbs-creator-string)
     (:with-latex nil "tex" org-twbs-with-latex)
+    (:with-toc nil nil nil)
+    (:section-numbers nil nil nil)
     ;; Retrieve LaTeX header for fragments.
     (:latex-header "LATEX_HEADER" nil nil newline)))
 
