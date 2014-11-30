@@ -6,12 +6,13 @@ Export [[http://orgmode.org/][org-mode]] docs as HTML compatible with [[http://g
 
 ** Description
 
-This library is derived from =ox-html.el=, which was written by
-Carsten Dominik and Jambunathan K, and is a part of [[http://www.gnu.org/software/emacs/][GNU Emacs]].
+This library is derived from a part of [[http://www.gnu.org/software/emacs/][GNU Emacs]], =ox-html.el=, which
+was written by Carsten Dominik and Jambunathan K.
 
-This library includes a small set of changes to create a new HTML
-backend for the Org export engine, which uses Twitter Bootstrap for
-styling and the [[http://getbootstrap.com/javascript/#affix][Affix.js]] library for a dynamic table of contents.
+This library, =ox-twbs.el=, includes a small set of changes to create
+a new HTML backend for the Org export engine, which uses Twitter
+Bootstrap for styling and the [[http://getbootstrap.com/javascript/#affix][Affix.js]] library for a dynamic table of
+contents.
 
 With no options, the publishing function =org-twbs-publish-to-html=
 will export HTML with jQuery and Bootstrap CSS and JS included via
@@ -19,7 +20,9 @@ CDN.
 
 ** Install
 
-Put ~ox-twbs.el~ in your load path and require it.
+Put ~ox-twbs.el~ in your load path and require it. Alternatively, open
+=ox-twbs.el= in your buffer and run =package-install-file=, which will
+compile and install the package in your package folder.
 
 ** Usage
 
