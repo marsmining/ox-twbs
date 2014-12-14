@@ -39,6 +39,7 @@ example configuration might look like:
           :base-directory "~/org/"
           :publishing-directory "~/public_html/"
           :publishing-function org-twbs-publish-to-html
+          :with-sub-superscript nil
           ))
 #+END_SRC
 
