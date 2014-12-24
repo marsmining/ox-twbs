@@ -165,14 +165,7 @@ $(function() {
 
     $(document.body).scrollspy({target: '.bs-docs-sidebar'});
 
-    $('.bs-docs-sidebar').affix({
-        offset: {
-            top: 0,
-            bottom: function () {
-                return (this.bottom = $('footer').outerHeight(true));
-            }
-        }
-    });
+    $('.bs-docs-sidebar').affix();
 
 });
 </script>"
@@ -1266,6 +1259,7 @@ INFO is a plist used as a communication channel."
      (format
       (org-twbs-close-tag "meta" "charset=\"%s\"" info)
       charset) "\n"
+      "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
       (org-twbs-close-tag "meta" "name=\"generator\" content=\"Org-mode\"" info)
       "\n"
       (and (org-string-nw-p author)
