@@ -1,37 +1,48 @@
 
-#+TITLE: Example 0
+#+TITLE: Example
 
-* Summary
+* Basics
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-aliquip ex ea commodo consequat. Duis aute irure dolor in
-reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-culpa qui officia deserunt mollit anim id est laborum.
+You can make words *bold*, /italic/, _underlined_, =code= and
+~verbatim~, and, if you must, +strike-through+. Text in the code and
+verbatim string is not processed for Org mode specific syntax, it is
+exported verbatim.
 
-* Heading One
+Some Greek like \alpha, \beta and \gamma.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-eiusmod tempor incididunt ut labore et dolore magna aliqua.
+And here is an example link to [[http://orgmode.org/][org-mode]] homepage.
 
-** Sub Heading
+* Lists
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-eiusmod tempor incididunt ut labore et dolore magna aliqua.
+- List Item 0
+- List Item 1
+- List Item 2
+- List Item 3
 
-** Another Sub
+* Blocks
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-eiusmod tempor incididunt ut labore et dolore magna aliqua.
+*** Normal blocks
 
-* Heading Two
+: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+: eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-eiusmod tempor incididunt ut labore et dolore magna aliqua.
+*** Quote blocks
 
-** Table Example
+#+BEGIN_QUOTE
+This is an example of a quote!
+#+END_QUOTE
+
+*** Source code blocks
+
+#+BEGIN_SRC elisp
+  (defun yell (n)
+    (if (= n 0) "hiya"
+      (concat (yell (- n 1)) "!")))
+
+  (yell 5) ;; "hiya!!!!"
+#+END_SRC
+
+* Tables
 
 | Name      | Price | Freshwater | Family        |
 |-----------+-------+------------+---------------|
@@ -39,7 +50,30 @@ eiusmod tempor incididunt ut labore et dolore magna aliqua.
 | Salmon    | 23.99 | both       | Salmonidae    |
 | Barracuda | 12.99 | no         | Sphyraena     |
 
-* Conclusion
+* Sections
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-eiusmod tempor incididunt ut labore et dolore magna aliqua.
+** Lord of the Rings
+
+My favorite scenes are (in this order)
+
+1. The attack of the Rohirrim
+2. Eowyn's fight with the witch king
+   + this was already my favorite scene in the book
+   + I really like Miranda Otto.
+3. Peter Jackson being shot by Legolas
+   - on DVD only
+   He makes a really funny face when it happens.
+
+But in the end, no individual scenes matter but the film as a whole.
+
+Important actors in this film are:
+
+- Elijah Wood :: He plays Frodo
+- Sean Austin :: He plays Sam, Frodo's friend.  I still remember
+  him very well from his role as Mikey Walsh in The Goonies.
+
+* Latex
+
+\begin{equation}
+x=\sqrt{b}
+\end{equation}

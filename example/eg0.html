@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Example</title>
+<!-- 2014-12-24 Wed 22:40 -->
+<meta charset="utf-8">
+<meta name="generator" content="Org-mode">
+<meta name="author" content="Brandon van Beekum">
+
+<link  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<style type="text/css">
+/* org mode styles on top of twbs */
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    font-size: 16px;
+    margin-bottom: 95px;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 101px;
+    background-color: #f5f5f5;
+}
+
+footer > div {
+    padding: 10px;
+}
+
+footer p {
+    margin: 0 0 5px;
+    text-align: center;
+}
+
+#table-of-contents {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+blockquote p {
+    font-size: 16px;
+}
+
+pre {
+    font-size: 16px;
+}
+
+/* from twbs docs */
+
+.bs-docs-sidebar.affix {
+    position: static;
+}
+@media (min-width: 768px) {
+    .bs-docs-sidebar {
+        padding-left: 20px;
+    }
+}
+
+/* All levels of nav */
+.bs-docs-sidebar .nav > li > a {
+    display: block;
+    padding: 4px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #999;
+}
+.bs-docs-sidebar .nav > li > a:hover,
+.bs-docs-sidebar .nav > li > a:focus {
+    padding-left: 19px;
+    color: #A1283B;
+    text-decoration: none;
+    background-color: transparent;
+    border-left: 1px solid #A1283B;
+}
+.bs-docs-sidebar .nav > .active > a,
+.bs-docs-sidebar .nav > .active:hover > a,
+.bs-docs-sidebar .nav > .active:focus > a {
+    padding-left: 18px;
+    font-weight: bold;
+    color: #A1283B;
+    background-color: transparent;
+    border-left: 2px solid #A1283B;
+}
+
+/* Nav: second level (shown on .active) */
+.bs-docs-sidebar .nav .nav {
+    display: none; /* Hide by default, but at >768px, show it */
+    padding-bottom: 10px;
+}
+.bs-docs-sidebar .nav .nav > li > a {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 30px;
+    font-size: 12px;
+    font-weight: normal;
+}
+.bs-docs-sidebar .nav .nav > li > a:hover,
+.bs-docs-sidebar .nav .nav > li > a:focus {
+    padding-left: 29px;
+}
+.bs-docs-sidebar .nav .nav > .active > a,
+.bs-docs-sidebar .nav .nav > .active:hover > a,
+.bs-docs-sidebar .nav .nav > .active:focus > a {
+    padding-left: 28px;
+    font-weight: 500;
+}
+
+/* Show and affix the side nav when space allows it */
+@media (min-width: 992px) {
+    .bs-docs-sidebar .nav > .active > ul {
+        display: block;
+    }
+    /* Widen the fixed sidebar */
+    .bs-docs-sidebar.affix,
+    .bs-docs-sidebar.affix-bottom {
+        width: 213px;
+    }
+    .bs-docs-sidebar.affix {
+        position: fixed; /* Undo the static from mobile first approach */
+        top: 20px;
+    }
+    .bs-docs-sidebar.affix-bottom {
+        position: absolute; /* Undo the static from mobile first approach */
+    }
+}
+@media (min-width: 1200px) {
+    /* Widen the fixed sidebar again */
+    .bs-docs-sidebar.affix-bottom,
+    .bs-docs-sidebar.affix {
+        width: 263px;
+    }
+}
+</style>
+<script type="text/javascript">
+$(function() {
+    'use strict';
+
+    $('.bs-docs-sidebar li').first().addClass('active');
+
+    $(document.body).scrollspy({target: '.bs-docs-sidebar'});
+
+    $('.bs-docs-sidebar').affix({
+        offset: {
+            top: 0,
+            bottom: function () {
+                return (this.bottom = $('footer').outerHeight(true));
+            }
+        }
+    });
+
+});
+</script>
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js"></script>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content" class="container">
+<div class="row"><div class="col-md-9"><h1 class="title">Example</h1>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Basics</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+You can make words <b>bold</b>, <i>italic</i>, <span class="underline">underlined</span>, <code>code</code> and
+<code>verbatim</code>, and, if you must, <del>strike-through</del>. Text in the code and
+verbatim string is not processed for Org mode specific syntax, it is
+exported verbatim.
+</p>
+
+<p>
+Some Greek like &alpha;, &beta; and &gamma;.
+</p>
+
+<p>
+And here is an example link to <a href="http://orgmode.org/">org-mode</a> homepage.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Lists</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>List Item 0
+</li>
+<li>List Item 1
+</li>
+<li>List Item 2
+</li>
+<li>List Item 3
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">Blocks</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-0-1" class="outline-4">
+<h4 id="sec-3-0-1">Normal blocks</h4>
+<div class="outline-text-4" id="text-3-0-1">
+<pre class="example">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+eiusmod tempor incididunt ut labore et dolore magna aliqua.
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-3-0-2" class="outline-4">
+<h4 id="sec-3-0-2">Quote blocks</h4>
+<div class="outline-text-4" id="text-3-0-2">
+<blockquote>
+<p>
+This is an example of a quote!
+</p>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-sec-3-0-3" class="outline-4">
+<h4 id="sec-3-0-3">Source code blocks</h4>
+<div class="outline-text-4" id="text-3-0-3">
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span style="color: #7f7f7f;">(</span><span style="color: #CDA869;">defun</span> <span style="color: #9B703F;">yell</span> <span style="color: #7f7f7f;">(</span>n<span style="color: #7f7f7f;">)</span>
+  <span style="color: #7f7f7f;">(</span><span style="color: #CDA869;">if</span> <span style="color: #7f7f7f;">(</span>= n 0<span style="color: #7f7f7f;">)</span> <span style="color: #8F9D6A;">"hiya"</span>
+    <span style="color: #7f7f7f;">(</span>concat <span style="color: #7f7f7f;">(</span>yell <span style="color: #7f7f7f;">(</span>- n 1<span style="color: #7f7f7f;">))</span> <span style="color: #8F9D6A;">"!"</span><span style="color: #7f7f7f;">)))</span>
+
+<span style="color: #7f7f7f;">(</span>yell 5<span style="color: #7f7f7f;">)</span> <span style="color: #5F5A60;">;; </span><span style="color: #5F5A60;">"hiya!!!!"</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">Tables</h2>
+<div class="outline-text-2" id="text-4">
+<table class="table table-striped table-bordered table-hover table-condensed">
+
+
+<colgroup>
+<col  class="left">
+
+<col  class="right">
+
+<col  class="left">
+
+<col  class="left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">Name</th>
+<th scope="col" class="right">Price</th>
+<th scope="col" class="left">Freshwater</th>
+<th scope="col" class="left">Family</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">Stingray</td>
+<td class="right">49.99</td>
+<td class="left">no</td>
+<td class="left">Myliobatoidei</td>
+</tr>
+
+<tr>
+<td class="left">Salmon</td>
+<td class="right">23.99</td>
+<td class="left">both</td>
+<td class="left">Salmonidae</td>
+</tr>
+
+<tr>
+<td class="left">Barracuda</td>
+<td class="right">12.99</td>
+<td class="left">no</td>
+<td class="left">Sphyraena</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">Sections</h2>
+<div class="outline-text-2" id="text-5">
+</div><div id="outline-container-sec-5-1" class="outline-3">
+<h3 id="sec-5-1">Lord of the Rings</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+My favorite scenes are (in this order)
+</p>
+
+<ol class="org-ol">
+<li>The attack of the Rohirrim
+</li>
+<li>Eowyn's fight with the witch king
+<ul class="org-ul">
+<li>this was already my favorite scene in the book
+</li>
+<li>I really like Miranda Otto.
+</li>
+</ul>
+</li>
+<li>Peter Jackson being shot by Legolas
+<ul class="org-ul">
+<li>on DVD only
+</li>
+</ul>
+<p>
+He makes a really funny face when it happens.
+</p>
+</li>
+</ol>
+
+<p>
+But in the end, no individual scenes matter but the film as a whole.
+</p>
+
+<p>
+Important actors in this film are:
+</p>
+
+<dl class="org-dl">
+<dt> Elijah Wood </dt><dd>He plays Frodo
+</dd>
+<dt> Sean Austin </dt><dd>He plays Sam, Frodo's friend.  I still remember
+him very well from his role as Mikey Walsh in The Goonies.
+</dd>
+</dl>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6">Latex</h2>
+<div class="outline-text-2" id="text-6">
+\begin{equation}
+x=\sqrt{b}
+\end{equation}
+</div>
+</div>
+</div><div class="col-md-3"><nav id="table-of-contents">
+<div id="text-table-of-contents" class="bs-docs-sidebar">
+<ul class="nav">
+<li><a href="#sec-1">Basics</a></li>
+<li><a href="#sec-2">Lists</a></li>
+<li><a href="#sec-3">Blocks</a>
+<ul class="nav">
+<li>
+<ul class="nav">
+<li><a href="#sec-3-0-1">Normal blocks</a></li>
+<li><a href="#sec-3-0-2">Quote blocks</a></li>
+<li><a href="#sec-3-0-3">Source code blocks</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-4">Tables</a></li>
+<li><a href="#sec-5">Sections</a>
+<ul class="nav">
+<li><a href="#sec-5-1">Lord of the Rings</a></li>
+</ul>
+</li>
+<li><a href="#sec-6">Latex</a></li>
+</ul>
+</div>
+</nav>
+</div></div></div>
+<footer id="postamble" class="">
+<div><p class="author">Author: Brandon van Beekum</p>
+<p class="date">Created: 2014-12-24 Wed 22:40</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+</div>
+</footer>
+</body>
+</html>
