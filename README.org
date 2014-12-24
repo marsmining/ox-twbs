@@ -53,7 +53,7 @@ this to a key sequence.
   (defun my-publish-function ()
     (interactive)
     (save-buffer)
-    (save-excursion (org-publish-file buffer-file-name))
+    (save-excursion (org-publish-current-file))
     (let* ((d (file-name-directory buffer-file-name))
            (f (file-name-base buffer-file-name))
            (p (when (string-match "^.*\\/\\([a-z]*\\)\\/" d)
