@@ -4,6 +4,12 @@
 
 Export [[http://orgmode.org/][org-mode]] docs as HTML compatible with [[http://getbootstrap.com/][Twitter Bootstrap]].
 
+** Examples
+
+An example [[example/eg0.org][org file]] and a [[example/eg0.png][screenshot]] of the rendered html.
+
+A live example page can be seen here: [[http://clubctrl.com/org/prog/wolf.html]]
+
 ** Description
 
 This library is derived from a part of [[http://www.gnu.org/software/emacs/][GNU Emacs]], =ox-html.el=, which
@@ -62,8 +68,3 @@ this to a key sequence.
        (concat "file:///Users/foo/public_html" p "/" f ".html"))))
 #+END_SRC
 
-** Example
-
-An example [[example/eg0.org][org file]] and a [[example/eg0.png][screenshot]] of the rendered html.
-
-An example page can be seen here: [[http://clubctrl.com/org/prog/wolf.html]]
