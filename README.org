@@ -69,15 +69,26 @@ file and opens it in your system's default browser. You could then bind
 this to a key sequence.
 
 #+BEGIN_SRC elisp
-  (defun my-publish-function ()
+  (defun my-org-publish-buffer ()
     (interactive)
     (save-buffer)
     (save-excursion (org-publish-current-file))
-    (let* ((d (file-name-directory buffer-file-name))
-           (f (file-name-base buffer-file-name))
-           (p (when (string-match "^.*\\/\\([a-z]*\\)\\/" d)
-                (match-string 1 d))))
-      (browse-url
-       (concat "file:///Users/foo/public_html" p "/" f ".html"))))
+    (let* ((proj (org-publish-get-project-from-filename buffer-file-name))
+           (proj-plist (cdr proj))
+           (rel (file-relative-name buffer-file-name
+                                    (plist-get proj-plist :base-directory)))
+           (dest (plist-get proj-plist :publishing-directory)))
+      (browse-url (concat "file://"
+                          (file-name-as-directory (expand-file-name dest))
+                          (file-name-sans-extension rel)
+                          ".html"))))
+#+END_SRC
+
+And bind the above command. I'm on OSX and happen to use `CMD-\`.
+
+#+BEGIN_SRC elisp
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (local-set-key (kbd "s-\\") 'my-org-publish-buffer)))
 #+END_SRC
 
