@@ -100,5 +100,5 @@ follows:
 - Allow users to more easily add a Twitter Bootstrap theme
 - Document areas where this package deviates from org-mode manual on
   [[http://orgmode.org/manual/HTML-export.html#HTML-export][HTML export]]
-- Improve Affix.js plugin scroll spying/following
-- Ensure this package works well with Org's sitemap function
+- Improve Affix.js plugin scroll-spying/following
+- Ensure this package works well with org's sitemap function
