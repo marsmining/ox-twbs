@@ -94,6 +94,16 @@ And bind the above command. I'm on OSX and happen to use ~CMD-\~.
               (local-set-key (kbd "s-\\") 'my-org-publish-buffer)))
 #+END_SRC
 
+** General Org Tips
+
+To specify a title of your org doc, other than the default:
+
+: #+TITLE: My Doc
+
+To quickly add blocks, check this [[http://orgmode.org/manual/Easy-Templates.html#Easy-Templates][easy template]] section of org manual.
+
+Be sure to understand how to [[http://orgmode.org/manual/Editing-source-code.html#Editing-source-code][edit source code blocks]].
+
 ** Todo
 
 Contributions are welcome! A list of potential fixes and enhancements
