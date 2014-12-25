@@ -65,8 +65,8 @@ example configuration might look like:
 Using the above config, you can run: =org-publish-all=
 
 And you might create a function which publishes the current buffers
-file and opens it in your system's default browser. You could then bind
-this to a key sequence.
+file and opens it in your system's default browser. Here is what I
+use in my emacs config:
 
 #+BEGIN_SRC elisp
   (defun my-org-publish-buffer ()
@@ -84,7 +84,7 @@ this to a key sequence.
                           ".html"))))
 #+END_SRC
 
-And bind the above command. I'm on OSX and happen to use `CMD-\`.
+And bind the above command. I'm on OSX and happen to use ~CMD-\~.
 
 #+BEGIN_SRC elisp
   (add-hook 'org-mode-hook
