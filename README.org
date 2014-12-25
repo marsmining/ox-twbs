@@ -26,6 +26,19 @@ CDN. This default is [[https://github.com/marsmining/ox-twbs/blob/ec2c35fd5e2888
 
 ** Install
 
+*** via package.el
+
+Latest builds available on [[http://melpa.org/#/][MELPA]] and for a bit more stability, use
+[[http://stable.melpa.org/#/][MELPA Stable]]. You can install ~ox-twbs~ using the following command:
+
+=M-x package-install [RET] ox-twbs [RET]=
+
+If the installation doesn't work try refreshing the package list:
+
+=M-x package-refresh-contents [RET]=
+
+*** Manual
+
 Put ~ox-twbs.el~ in your load path and require it. Alternatively, open
 =ox-twbs.el= in your buffer and run =package-install-file=, which will
 compile and install the package in your package folder.
