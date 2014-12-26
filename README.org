@@ -10,19 +10,14 @@ The following [[https://raw.githubusercontent.com/marsmining/ox-twbs/master/exam
 
 ** Description
 
-This library implements an HTML back-end for exporting org-mode docs
-as HTML compatible with Twitter Bootstrap. The [[http://getbootstrap.com/javascript/#affix][Affix.js]] library is
-used for a dynamic table of contents. The goal was to have a clean and
-modern look to publishing my org files.
+Output your org-mode docs with a simple, clean and modern look.
 
-With no options, the publishing function =org-twbs-publish-to-html=
-will export HTML with jQuery and Bootstrap resources included via
-the [[http://osscdn.com][osscdn]] provided by [[https://www.maxcdn.com][MAXCDN]]. This default is [[https://github.com/marsmining/ox-twbs/blob/ec2c35fd5e2888b80f4703e2aaec50a7cb04ad1b/ox-twbs.el#L994-L1030][defined here]].
+This library implements a new HTML back-end for exporting org-mode
+docs as HTML compatible with Twitter Bootstrap. By default, HTML is
+exported with jQuery and Bootstrap resources included via [[http://osscdn.com][osscdn]].
 
-Derived from a part of [[http://www.gnu.org/software/emacs/][GNU Emacs]], =ox-html.el=, which was written by
-Carsten Dominik and Jambunathan K. Apart from the style changes, a lot
-of the legacy support for pre-html5 has been removed to make the code
-simpler.
+Derived from the built-in HTML back-end of [[http://www.gnu.org/software/emacs/][GNU Emacs]], =ox-html.el=,
+which was written by Carsten Dominik and Jambunathan K.
 
 ** Install
 
