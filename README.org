@@ -97,6 +97,12 @@ To quickly add blocks, check this [[http://orgmode.org/manual/Easy-Templates.htm
 
 Be sure to understand how to [[http://orgmode.org/manual/Editing-source-code.html#Editing-source-code][edit source code blocks]].
 
+** Customize
+
+The first place to look is in the definition of [[https://github.com/marsmining/ox-twbs/blob/d5ae9c3fb224d081d59d3686d619edf152523f09/ox-twbs.el#L987-L1002][org-twbs-head]]. You can
+set this on a per-file basis using ~#+HTML_HEAD:~, or for publication
+projects using the ~:html-head~ property.
+
 ** Todo
 
 Contributions are welcome! A list of potential fixes and enhancements
