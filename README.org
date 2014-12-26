@@ -4,11 +4,9 @@
 
 Export [[http://orgmode.org/][org-mode]] docs as HTML compatible with [[http://getbootstrap.com/][Twitter Bootstrap]].
 
-** Examples
+** Example
 
-An example [[example/eg0.org][org file]] and a [[example/eg0.png][screenshot]] of the rendered html.
-
-A live example page can be seen here: [[http://clubctrl.com/org/prog/wolf.html]]
+The following [[https://raw.githubusercontent.com/marsmining/ox-twbs/master/example/eg0.org][org source]] exports to [[http://clubctrl.com/org/prog/ox-twbs.html][this html]].
 
 ** Description
 
