@@ -990,27 +990,6 @@ style information."
 <script src=\"https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js\"></script>"
   "Org-wide head definitions for exported HTML files.
 
-This variable can contain the full HTML structure to provide a
-style, including the surrounding HTML tags.  You can consider
-including definitions for the following classes: title, todo,
-done, timestamp, timestamp-kwd, tag, target.
-
-For example, a valid value would be:
-
-   <style type=\"text/css\">
-    <![CDATA[
-       p { font-weight: normal; color: gray; }
-       h1 { color: black; }
-      .title { text-align: center; }
-      .todo, .timestamp-kwd { color: red; }
-      .done { color: green; }
-    ]]>
-   </style>
-
-If you want to refer to an external style, use something like
-
-   <link rel=\"stylesheet\" type=\"text/css\" href=\"mystyles.css\" />
-
 As the value of this option simply gets inserted into the HTML
 <head> header, you can use it to add any arbitrary text to the
 header.
