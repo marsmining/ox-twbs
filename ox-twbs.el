@@ -108,7 +108,7 @@
   :export-block "HTML"
   :filters-alist '((:filter-final-output . org-twbs-final-function))
   :menu-entry
-  '(?t "Export to TWBS HTML"
+  '(?w "Export to TWBS HTML"
        ((?H "As HTML buffer" org-twbs-export-as-html)
         (?h "As HTML file" org-twbs-export-to-html)
         (?o "As HTML file and open"
