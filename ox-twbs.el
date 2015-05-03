@@ -215,6 +215,10 @@ pre {
     font-size: 16px;
 }
 
+.footpara {
+    display: inline-block;
+}
+
 /* from twbs docs */
 
 .bs-docs-sidebar.affix {
