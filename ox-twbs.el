@@ -158,15 +158,17 @@
 
 (defconst org-twbs-scripts
   "<script type=\"text/javascript\">
+
 $(function() {
     'use strict';
 
-    $('.bs-docs-sidebar li').first().addClass('active');
+    setTimeout(function() {
+        $('.bs-docs-sidebar li').first().addClass('active');
 
-    $(document.body).scrollspy({target: '.bs-docs-sidebar'});
+        $(document.body).scrollspy({target: '.bs-docs-sidebar'});
 
-    $('.bs-docs-sidebar').affix();
-
+        $('.bs-docs-sidebar').affix();
+    }, 500);
 });
 </script>"
   "Basic JavaScript that is needed by HTML files produced by Org mode.")
