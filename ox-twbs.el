@@ -1439,9 +1439,6 @@ communication channel."
 CONTENTS is the transcoded contents string.  INFO is a plist
 holding export options."
   (concat
-   ;; Table of contents.
-   (let ((depth (plist-get info :with-toc)))
-     (when depth (org-twbs-toc depth info)))
    ;; Document contents.
    contents
    ;; Footnotes section.
@@ -1473,17 +1470,22 @@ holding export options."
            (nth 1 (assq 'content org-twbs-divs))
            (nth 2 (assq 'content org-twbs-divs))
            (nth 3 (assq 'content org-twbs-divs)))
-   ;; twbs row
+   ;; Main doc body twbs row
    "<div class=\"row\">"
-   "<div class=\"col-md-9\">"
+   (if (plist-get info :with-toc) "<div class=\"col-md-9\">"
+     "<div class=\"col-md-12\">")
    ;; Document title.
    (let ((title (plist-get info :title)))
      (format "<h1 class=\"title\">%s</h1>\n" (org-export-data (or title "") info)))
    contents
    "</div>"
-   "<div class=\"col-md-3\">"
-   (org-twbs-toc 3 info)
-   "</div>"
+   ;; Table of contents.
+   (let ((depth (plist-get info :with-toc)))
+     (when depth
+       (concat
+        "<div class=\"col-md-3\">"
+        (org-twbs-toc depth info)
+        "</div>")))
    "</div>"
    (format "</%s>\n"
            (nth 1 (assq 'content org-twbs-divs)))
@@ -2099,7 +2101,7 @@ holding contextual information."
     (let ((format-function
            (function*
             (lambda (todo todo-type priority text tags
-                     &key contents &allow-other-keys)
+                          &key contents &allow-other-keys)
               (funcall org-twbs-format-inlinetask-function
                        todo todo-type priority text tags contents)))))
       (org-twbs-format-headline--wrap
