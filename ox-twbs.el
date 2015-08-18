@@ -162,13 +162,11 @@
 $(function() {
     'use strict';
 
-    setTimeout(function() {
-        $('.bs-docs-sidebar li').first().addClass('active');
+    $('.bs-docs-sidebar li').first().addClass('active');
 
-        $(document.body).scrollspy({target: '.bs-docs-sidebar'});
+    $(document.body).scrollspy({target: '.bs-docs-sidebar'});
 
-        $('.bs-docs-sidebar').affix();
-    }, 500);
+    $('.bs-docs-sidebar').affix();
 });
 </script>"
   "Basic JavaScript that is needed by HTML files produced by Org mode.")
@@ -319,6 +317,10 @@ pre {
     }
     .bs-docs-sidebar.affix-bottom {
         position: absolute; /* Undo the static from mobile first approach */
+    }
+    .bs-docs-sidebar.affix .bs-docs-sidenav,.bs-docs-sidebar.affix-bottom .bs-docs-sidenav {
+        margin-top: 0;
+        margin-bottom: 0
     }
 }
 @media (min-width: 1200px) {
@@ -972,9 +974,9 @@ style information."
 
 (define-obsolete-variable-alias 'org-twbs-style 'org-twbs-head "24.4")
 (defcustom org-twbs-head "
-<link  href=\"https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/css/bootstrap.min.css\" rel=\"stylesheet\">
-<script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js\"></script>
-<script src=\"https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js\"></script>"
+<link  href=\"https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css\" rel=\"stylesheet\">
+<script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js\"></script>
+<script src=\"https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js\"></script>"
   "Org-wide head definitions for exported HTML files.
 
 As the value of this option simply gets inserted into the HTML
