@@ -1,4 +1,3 @@
-
 #+TITLE: Example
 
 * Basics
@@ -29,7 +28,10 @@ And here is an example link to [[http://orgmode.org/][org-mode]] homepage.
 *** Quote blocks
 
 #+BEGIN_QUOTE
-This is an example of a quote!
+Programs must be written for people to read, and only incidentally
+for machines to execute.
+
+/Abelson & Sussman, SICP, preface to the first edition/
 #+END_QUOTE
 
 *** Source code blocks
@@ -77,3 +79,28 @@ Important actors in this film are:
 \begin{equation}
 x=\sqrt{b}
 \end{equation}
+
+* HTML
+
+Here is some markup: <b>not bold text</b>
+
+And a section:
+
+#+BEGIN_SRC html
+<b>pow!</b>
+#+END_SRC
+
+#+BEGIN_HTML
+<b>pow!</b>
+<ul>
+ <li>bing
+ <li>bam
+ <li>boom
+</ul>
+#+END_HTML
+
+#+HTML: <i>italics</i>
+
+Finally inline: @@html:<b>@@bold text@@html:</b>@@
+
+See org-mode manual: [[http://orgmode.org/manual/Quoting-HTML-tags.html#Quoting-HTML-tags][Quoting HTML Tags]]
