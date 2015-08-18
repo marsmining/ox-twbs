@@ -753,7 +753,7 @@ See `format-time-string' for more information on its components."
 ;;;; Template :: Mathjax
 
 (defcustom org-twbs-mathjax-options
-  '((path  "http://orgmode.org/mathjax/MathJax.js")
+  '((path  "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML")
     (scale "100")
     (align "center")
     (indent "2em")
@@ -786,48 +786,7 @@ You can also customize this for each buffer, using something like
                      (const :format "       " mathml) (boolean))))
 
 (defcustom org-twbs-mathjax-template
-  "<script type=\"text/javascript\" src=\"%PATH\"></script>
-<script type=\"text/javascript\">
-<!--/*--><![CDATA[/*><!--*/
-    MathJax.Hub.Config({
-        // Only one of the two following lines, depending on user settings
-        // First allows browser-native MathML display, second forces HTML/CSS
-        :MMLYES: config: [\"MMLorHTML.js\"], jax: [\"input/TeX\"],
-        :MMLNO: jax: [\"input/TeX\", \"output/HTML-CSS\"],
-        extensions: [\"tex2jax.js\",\"TeX/AMSmath.js\",\"TeX/AMSsymbols.js\",
-                     \"TeX/noUndefined.js\"],
-        tex2jax: {
-            inlineMath: [ [\"\\\\(\",\"\\\\)\"] ],
-            displayMath: [ ['$$','$$'], [\"\\\\[\",\"\\\\]\"], [\"\\\\begin{displaymath}\",\"\\\\end{displaymath}\"] ],
-            skipTags: [\"script\",\"noscript\",\"style\",\"textarea\",\"pre\",\"code\"],
-            ignoreClass: \"tex2jax_ignore\",
-            processEscapes: false,
-            processEnvironments: true,
-            preview: \"TeX\"
-        },
-        showProcessingMessages: true,
-        displayAlign: \"%ALIGN\",
-        displayIndent: \"%INDENT\",
-
-        \"HTML-CSS\": {
-             scale: %SCALE,
-             availableFonts: [\"STIX\",\"TeX\"],
-             preferredFont: \"TeX\",
-             webFont: \"TeX\",
-             imageFont: \"TeX\",
-             showMathMenu: true,
-        },
-        MMLorHTML: {
-             prefer: {
-                 MSIE:    \"MML\",
-                 Firefox: \"MML\",
-                 Opera:   \"HTML\",
-                 other:   \"HTML\"
-             }
-        }
-    });
-/*]]>*///-->
-</script>"
+  "<script type=\"text/javascript\" src=\"%PATH\"></script>"
   "The MathJax setup for HTML files."
   :group 'org-export-twbs
   :type 'string)
