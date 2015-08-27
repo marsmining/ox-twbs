@@ -1042,7 +1042,7 @@ arguments CAPTION and LABEL are given, use them for caption and
   (format "\n<figure%s>%s%s\n</figure>"
           ;; ID.
           (if (not (org-string-nw-p label)) ""
-            (format " id=\"%s\"" (org-export-solidify-link-text label)))
+            (format " id=\"%s\"" label))
           ;; Contents.
           (format "\n<p>%s</p>" contents)
           ;; Caption.
@@ -1685,12 +1685,12 @@ INFO is a plist used as a communication channel."
                 info))
          (tags (and (eq (plist-get info :with-tags) t)
                     (org-export-get-tags headline info))))
+    (message (format "org-twbs--format-toc-headline: hn: %s" headline-number))
     (format "<a href=\"#%s\">%s</a>"
             ;; Label.
-            (org-export-solidify-link-text
-             (or (org-element-property :CUSTOM_ID headline)
-                 (concat "sec-"
-                         (mapconcat #'number-to-string headline-number "-"))))
+            (or (org-element-property :CUSTOM_ID headline)
+                (concat "sec-"
+                        (mapconcat #'number-to-string headline-number "-")))
             ;; Body.
             (concat
              (and (not (org-export-low-level-p headline info))
@@ -1732,7 +1732,7 @@ of listings as a string, or nil if it is empty."
                       (if (not label)
                           (concat (format initial-fmt (incf count)) " " title)
                         (format "<a href=\"#%s\">%s %s</a>"
-                                (org-export-solidify-link-text label)
+                                label
                                 (format initial-fmt (incf count))
                                 title))
                       "</li>")))
@@ -1767,7 +1767,7 @@ of tables as a string, or nil if it is empty."
                       (if (not label)
                           (concat (format initial-fmt (incf count)) " " title)
                         (format "<a href=\"#%s\">%s %s</a>"
-                                (org-export-solidify-link-text label)
+                                label
                                 (format initial-fmt (incf count))
                                 title))
                       "</li>")))
@@ -1980,8 +1980,7 @@ holding contextual information."
            (extra-ids (mapconcat
                        (lambda (id)
                          (org-twbs--anchor
-                          (org-export-solidify-link-text
-                           (if (org-uuidgen-p id) (concat "ID-" id) id))))
+                          (if (org-uuidgen-p id) (concat "ID-" id) id)))
                        (cdr ids) ""))
            ;; Create the headline text.
            (full-text (org-twbs-format-headline--wrap headline info)))
@@ -2390,8 +2389,7 @@ INFO is a plist holding contextual information.  See
       (let ((destination (org-export-resolve-radio-link link info)))
         (if (not destination) desc
           (format "<a href=\"#%s\"%s>%s</a>"
-                  (org-export-solidify-link-text
-                   (org-element-property :value destination))
+                  (org-element-property :value destination)
                   attributes desc))))
      ;; Links pointing to a headline: Find destination and build
      ;; appropriate referencing command.
@@ -2446,10 +2444,10 @@ INFO is a plist holding contextual information.  See
                     (or desc (org-export-data (org-element-property
                                                :title destination) info)))))
              (format "<a href=\"#%s\"%s>%s</a>"
-                     (org-export-solidify-link-text href) attributes desc)))
+                     href attributes desc)))
           ;; Fuzzy link points to a target or an element.
           (t
-           (let* ((path (org-export-solidify-link-text path))
+           (let* ((path path)
                   (org-twbs-standalone-image-predicate 'org-twbs--has-caption-p)
                   (number (cond
                            (desc nil)
@@ -2688,8 +2686,7 @@ holding contextual information."
   "Transcode a RADIO-TARGET object from Org to HTML.
 TEXT is the text of the target.  INFO is a plist holding
 contextual information."
-  (let ((id (org-export-solidify-link-text
-             (org-element-property :value radio-target))))
+  (let ((id (org-element-property :value radio-target)))
     (org-twbs--anchor id text)))
 
 ;;;; Special Block
@@ -2721,7 +2718,7 @@ contextual information."
           (label (let ((lbl (org-element-property :name src-block)))
                    (if (not lbl) ""
                      (format " id=\"%s\""
-                             (org-export-solidify-link-text lbl))))))
+                             lbl)))))
       (if (not lang) (format "<pre class=\"example\"%s>\n%s</pre>" label code)
         (format
          "<div class=\"org-src-container\">\n%s%s\n</div>"
@@ -2882,7 +2879,7 @@ contextual information."
             (attributes
              (org-twbs--make-attribute-string
               (org-combine-plists
-               (and label (list :id (org-export-solidify-link-text label)))
+               (and label (list :id label))
                (plist-get info :html-table-attributes)
                (org-export-read-attribute :attr_html table))))
             (alignspec
@@ -2929,8 +2926,7 @@ contextual information."
   "Transcode a TARGET object from Org to HTML.
 CONTENTS is nil.  INFO is a plist holding contextual
 information."
-  (let ((id (org-export-solidify-link-text
-             (org-element-property :value target))))
+  (let ((id (org-element-property :value target)))
     (org-twbs--anchor id)))
 
 ;;;; Timestamp
