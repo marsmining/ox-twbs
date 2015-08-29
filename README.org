@@ -19,6 +19,12 @@ exported with jQuery and Bootstrap resources included via [[http://osscdn.com][o
 Derived from the built-in HTML back-end of [[http://www.gnu.org/software/emacs/][GNU Emacs]], =ox-html.el=,
 which was written by Carsten Dominik and Jambunathan K.
 
+** Note re: latest Org 8.3.x
+
+As of Aug 29th, ox-twbs should be compatible with 8.2.x and 8.3.x,
+however, if using 8.3.x, do not turn off section numbering if you
+wish to have a working table of contents.
+
 ** Install
 
 *** via package.el
