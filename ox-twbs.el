@@ -1173,11 +1173,19 @@ Replaces invalid characters with \"_\"."
                (org-twbs--anchor id n attributes)))
      def)))
 
+(defun org-twbs-collect-footnote-definitions (info)
+  "Signature change underneath us, released maybe with 8.3 commit URL at:
+http://orgmode.org/w/?p=org-mode.git;a=commit;h=014de0a532cbc60987d09d6040ed46195cffdf12
+Try the old 2-arity and if fails, try the new single-arity."
+  (message "pow!")
+  (condition-case nil
+      (org-export-collect-footnote-definitions (plist-get info :parse-tree) info)
+    (error (org-export-collect-footnote-definitions info))))
+
 (defun org-twbs-footnote-section (info)
   "Format the footnote section.
 INFO is a plist used as a communication channel."
-  (let* ((fn-alist (org-export-collect-footnote-definitions
-                    (plist-get info :parse-tree) info))
+  (let* ((fn-alist (org-twbs-collect-footnote-definitions info))
          (fn-alist
           (loop for (n type raw) in fn-alist collect
                 (cons n (if (eq (org-element-type raw) 'org-data)
