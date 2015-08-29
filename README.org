@@ -23,7 +23,8 @@ which was written by Carsten Dominik and Jambunathan K.
 
 As of Aug 29th, ox-twbs should be compatible with 8.2.x and 8.3.x,
 however, if using 8.3.x, do not turn off section numbering if you
-wish to have a working table of contents.
+wish to have a working table of contents. This should be fixed soon,
+but is a caveat if running latest org-mode release series.
 
 ** Install
 

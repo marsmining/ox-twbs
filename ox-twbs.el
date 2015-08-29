@@ -8,7 +8,7 @@
 ;;      Brandon van Beekum <marsmining at gmail dot com>
 ;; URL: https://github.com/marsmining/ox-twbs
 ;; Keywords: org, html, publish, twitter, bootstrap
-;; Version: 0.2.0
+;; Version: 0.2.1
 
 ;; This file is not part of GNU Emacs.
 
