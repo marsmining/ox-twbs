@@ -2174,6 +2174,15 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 
 ;;;; Latex Environment
 
+(defun org-twbs-format-latex-arity (prefix &optional dir overlays msg
+                                           at forbuffer processing-type)
+  "Arity fix for org-format-latex signature change here:
+http://orgmode.org/w/?p=org-mode.git;a=commit;h=8daf4a89f1a157c0ee2c91e5b990203679b31cf7
+Call 7-arity first, then 6-arity if first fails."
+  (condition-case nil
+      (org-format-latex prefix dir overlays msg at forbuffer processing-type)
+    (error (org-format-latex prefix dir overlays msg forbuffer processing-type))))
+
 (defun org-twbs-format-latex (latex-frag processing-type info)
   "Format a LaTeX fragment LATEX-FRAG into HTML.
 PROCESSING-TYPE designates the tool used for conversion.  It is
@@ -2204,8 +2213,9 @@ a plist containing export properties."
         (setq latex-frag (concat latex-header latex-frag))))
     (with-temp-buffer
       (insert latex-frag)
-      (org-format-latex cache-relpath cache-dir nil "Creating LaTeX Image..."
-                        nil nil processing-type)
+      (org-twbs-format-latex-arity cache-relpath cache-dir nil
+                                   "Creating LaTeX Image..."
+                                   nil nil processing-type)
       (buffer-string))))
 
 (defun org-twbs-latex-environment (latex-environment contents info)
