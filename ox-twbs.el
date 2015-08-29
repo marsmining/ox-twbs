@@ -1177,7 +1177,6 @@ Replaces invalid characters with \"_\"."
   "Signature change underneath us, released maybe with 8.3 commit URL at:
 http://orgmode.org/w/?p=org-mode.git;a=commit;h=014de0a532cbc60987d09d6040ed46195cffdf12
 Try the old 2-arity and if fails, try the new single-arity."
-  (message "pow!")
   (condition-case nil
       (org-export-collect-footnote-definitions (plist-get info :parse-tree) info)
     (error (org-export-collect-footnote-definitions info))))
@@ -1701,7 +1700,6 @@ INFO is a plist used as a communication channel."
                 info))
          (tags (and (eq (plist-get info :with-tags) t)
                     (org-export-get-tags headline info))))
-    (message (format "org-twbs--format-toc-headline: hn: %s" headline-number))
     (format "<a href=\"#%s\">%s</a>"
             ;; Label.
             (or (org-element-property :CUSTOM_ID headline)
