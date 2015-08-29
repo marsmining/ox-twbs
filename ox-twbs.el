@@ -1618,7 +1618,15 @@ a plist used as a communication channel."
 
 ;;; Tables of Contents
 
-(defun org-twbs-toc (depth info)
+(defun org-twbs-collect-headlines (info depth &optional scope)
+  "Another arity change in org:
+http://orgmode.org/w/?p=org-mode.git;a=commit;h=b07e2f6ff1feddde83506b7fdb370bfe8e0a5337
+Try new 3-arity first, then old 2-arity."
+  (condition-case nil
+      (org-export-collect-headlines info depth scope)
+    (error (org-export-collect-headlines info depth))))
+
+(defun org-twbs-toc (depth info &optional scope)
   "Build a table of contents.
 DEPTH is an integer specifying the depth of the table.  INFO is a
 plist used as a communication channel.  Return the table of
@@ -1627,7 +1635,7 @@ contents as a string, or nil if it is empty."
          (mapcar (lambda (headline)
                    (cons (org-twbs--format-toc-headline headline info)
                          (org-export-get-relative-level headline info)))
-                 (org-export-collect-headlines info depth)))
+                 (org-twbs-collect-headlines info depth scope)))
         (outer-tag "nav"))
     (when toc-entries
       (concat (format "<%s id=\"table-of-contents\">\n" outer-tag)
