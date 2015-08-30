@@ -4,11 +4,11 @@
 ;; Copyright (C) 2014 Brandon van Beekum
 
 ;; Author: Carsten Dominik <carsten at orgmode dot org>
-;;      Jambunathan K <kjambunathan at gmail dot com>
-;;      Brandon van Beekum <marsmining at gmail dot com>
+;;         Jambunathan K <kjambunathan at gmail dot com>
+;;         Brandon van Beekum <marsmining at gmail dot com>
 ;; URL: https://github.com/marsmining/ox-twbs
 ;; Keywords: org, html, publish, twitter, bootstrap
-;; Version: 0.2.1
+;; Version: 1.0.0
 
 ;; This file is not part of GNU Emacs.
 
