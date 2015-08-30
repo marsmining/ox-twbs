@@ -136,6 +136,7 @@
     (:creator "CREATOR" nil org-twbs-creator-string)
     (:with-latex nil "tex" org-twbs-with-latex)
     (:with-toc nil nil 2)
+    (:with-creator nil nil t)
     (:section-numbers nil nil t)
     ;; Retrieve LaTeX header for fragments.
     (:latex-header "LATEX_HEADER" nil nil newline)))
