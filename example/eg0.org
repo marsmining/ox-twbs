@@ -19,6 +19,9 @@ And here is an example link to [[http://orgmode.org/][org-mode]] homepage.
 - List Item 3
 
 * Blocks
+:PROPERTIES:
+:CUSTOM_ID: blocks
+:END:
 
 *** Normal blocks
 
@@ -74,17 +77,11 @@ Important actors in this film are:
 - Sean Austin :: He plays Sam, Frodo's friend.  I still remember
   him very well from his role as Mikey Walsh in The Goonies.
 
-* Latex
-
-\begin{equation}
-x=\sqrt{b}
-\end{equation}
-
 * HTML
 
 Here is some markup: <b>not bold text</b>
 
-And a section:
+And a source block:
 
 #+BEGIN_SRC html
 <b>pow!</b>
@@ -103,4 +100,24 @@ And a section:
 
 Finally inline: @@html:<b>@@bold text@@html:</b>@@
 
-See org-mode manual: [[http://orgmode.org/manual/Quoting-HTML-tags.html#Quoting-HTML-tags][Quoting HTML Tags]]
+See org-mode manual [[http://orgmode.org/manual/Quoting-HTML-tags.html#Quoting-HTML-tags][Quoting HTML tags]].
+
+* Footnote
+
+Here lies exact instructions [fn:a] for random [fn:b] noise.
+
+* Latex
+
+/Trace execution using example:/
+
+Assume $\alpha=9$, $n=16$ and $x=0$.
+
+Stack grows until base case $2^{x}=n$, thenunwinds.
+
+* Custom ID
+
+[[#blocks][Link to custom id]]
+
+[fn:a] Except for USA, Mexico and Canada
+
+[fn:b] Further tournament types will be added
