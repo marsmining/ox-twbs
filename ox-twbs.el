@@ -8,7 +8,7 @@
 ;;         Brandon van Beekum <marsmining at gmail dot com>
 ;; URL: https://github.com/marsmining/ox-twbs
 ;; Keywords: org, html, publish, twitter, bootstrap
-;; Version: 1.0.0
+;; Version: 1.0.1
 
 ;; This file is not part of GNU Emacs.
 
@@ -2703,7 +2703,7 @@ holding contextual information."
         (format "<div class=\"outline-text-%d\" id=\"text-%s\">\n%s</div>"
                 class-num
                 (or (org-element-property :CUSTOM_ID parent) section-number)
-                contents)))))
+                (or contents ""))))))
 
 ;;;; Radio Target
 
