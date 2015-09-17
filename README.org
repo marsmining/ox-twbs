@@ -19,13 +19,6 @@ exported with jQuery and Bootstrap resources included via [[http://osscdn.com][o
 Derived from the built-in HTML back-end of [[http://www.gnu.org/software/emacs/][GNU Emacs]], =ox-html.el=,
 which was written by Carsten Dominik and Jambunathan K.
 
-** Note re: latest Org 8.3.x
-
-As of Aug 29th, ox-twbs should be compatible with 8.2.x and 8.3.x,
-however, if using 8.3.x, do not turn off section numbering if you
-wish to have a working table of contents. This should be fixed soon,
-but is a caveat if running latest org-mode release series.
-
 ** Install
 
 *** via package.el
@@ -103,6 +96,31 @@ To specify a title of your org doc, other than the default:
 To quickly add blocks, check this [[http://orgmode.org/manual/Easy-Templates.html#Easy-Templates][easy template]] section of org manual.
 
 Be sure to understand how to [[http://orgmode.org/manual/Editing-source-code.html#Editing-source-code][edit source code blocks]].
+
+Controlling depth of section numbers, table of contents and headings
+can be controlled per document via a declaration like the following:
+
+: #+OPTIONS: num:5 whn:2 toc:4 H:6
+
+And to set these via your publish configuration using the
+=org-publish-project-alist=, the options would be =:section-numbers=,
+=:headline-levels= and =:with-toc=.
+
+The above options are described in the [[http://orgmode.org/manual/Export-settings.html][export settings]] section of the
+orgmode manual. This component introduces a new setting =whn= for per
+document, and =:with-headline-numbers= for publish config, which
+controls the display of section numbers. To disable, set to =nil=, to
+enable, set to =t=, and to control depth of display, use a whole
+number.
+
+** Note re: latest Org 8.3.x
+
+Traditionally preventing section numbers from display was
+accomplished via the =:section-numbers= option, however, in 8.3.x,
+setting it to =nil= now also eliminates the numbering from the parsed
+document, which then breaks toc and linking. Therefore, this module
+introduces a new option =:with-headline-numbers= which can be used for
+toggling display of section numbers.
 
 ** Customize
 
