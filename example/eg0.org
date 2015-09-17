@@ -11,6 +11,18 @@ Some Greek like \alpha, \beta and \gamma.
 
 And here is an example link to [[http://orgmode.org/][org-mode]] homepage.
 
+* Headlines
+
+text
+
+** Alpha
+
+text
+
+*** Bravo
+
+text
+
 * Lists
 
 - List Item 0
