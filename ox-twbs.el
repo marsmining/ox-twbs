@@ -2461,20 +2461,16 @@ INFO is a plist holding contextual information.  See
                                        (org-export-get-headline-number
                                         destination info) "-")))
                    (t (error "Shouldn't reach here"))))
-                 ;; What description to use?
+                 ;; What description to use?  Previously, we'd look if
+                 ;; section numbering was enabled, and use that
+                 ;; number, however, rendering a link description as
+                 ;; number seems less useful than destination title.
+                 ;; And since Org 8.3 there has been a lot of
+                 ;; dependencies on :section-number, so will do
+                 ;; something simple here for now.
                  (desc
-                  ;; Case 1: Headline is numbered and LINK has no
-                  ;; description.  Display section number.
-                  (if (and (org-export-numbered-headline-p destination info)
-                           (not desc))
-                      (mapconcat 'number-to-string
-                                 (org-export-get-headline-number
-                                  destination info) ".")
-                    ;; Case 2: Either the headline is un-numbered or
-                    ;; LINK has a custom description.  Display LINK's
-                    ;; description or headline's title.
-                    (or desc (org-export-data (org-element-property
-                                               :title destination) info)))))
+                  (or desc (org-export-data (org-element-property
+                                             :title destination) info))))
              (format "<a href=\"#%s\"%s>%s</a>"
                      href attributes desc)))
           ;; Fuzzy link points to a target or an element.
