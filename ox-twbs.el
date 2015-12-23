@@ -8,7 +8,7 @@
 ;;         Brandon van Beekum <marsmining at gmail dot com>
 ;; URL: https://github.com/marsmining/ox-twbs
 ;; Keywords: org, html, publish, twitter, bootstrap
-;; Version: 1.0.4
+;; Version: 1.0.5
 
 ;; This file is not part of GNU Emacs.
 
@@ -2726,11 +2726,19 @@ holding contextual information."
   (let* ((block-type (downcase
                       (org-element-property :type special-block)))
          (contents (or contents ""))
+         (is-html5-tag? (member block-type org-html-html5-elements))
          (attributes (org-export-read-attribute :attr_html special-block)))
+    (unless is-html5-tag?
+      (let ((class (plist-get attributes :class)))
+        (setq attributes (plist-put attributes :class
+                                    (if class (concat class " " block-type)
+                                      block-type)))))
     (setq attributes (org-twbs--make-attribute-string attributes))
     (when (not (equal attributes ""))
       (setq attributes (concat " " attributes)))
-    (format "<%s%s>\n%s</%s>" block-type attributes contents block-type)))
+    (if is-html5-tag?
+        (format "<%s%s>\n%s</%s>" block-type attributes contents block-type)
+      (format "<div%s>\n%s\n</div>" attributes contents))))
 
 ;;;; Src Block
 
