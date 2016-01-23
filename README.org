@@ -49,12 +49,12 @@ example configuration might look like:
 
 #+BEGIN_SRC elisp
   (setq org-publish-project-alist
-        '("org-notes"
-          :base-directory "~/org/"
-          :publishing-directory "~/public_html/"
-          :publishing-function org-twbs-publish-to-html
-          :with-sub-superscript nil
-          ))
+        '(("org-notes"
+           :base-directory "~/org/"
+           :publishing-directory "~/public_html/"
+           :publishing-function org-twbs-publish-to-html
+           :with-sub-superscript nil
+           )))
 #+END_SRC
 
 Using the above config, you can run: =org-publish-all=
