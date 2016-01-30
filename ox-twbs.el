@@ -137,8 +137,10 @@
     (:with-latex nil "tex" org-twbs-with-latex)
     (:with-toc nil nil 2)
     (:with-creator nil nil t)
-    (:with-headline-numbers nil "whn" t)
     (:section-numbers nil nil t)
+    ;; Extra Options
+    (:gid nil "gid" nil)
+    (:with-headline-numbers nil "whn" t)
     ;; Retrieve LaTeX header for fragments.
     (:latex-header "LATEX_HEADER" nil nil newline)))
 
@@ -1017,6 +1019,25 @@ CSS classes, then this prefix can be very useful."
   :group 'org-export-twbs
   :type 'string)
 
+;;;; Google Analytics
+
+(defcustom org-twbs-google-analytics "
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', '%s', 'auto');
+  ga('send', 'pageview');
+
+</script>\n"
+  "Snippet used to insert the Google Analytics tracking code.
+This is a format string, the %s will be replaced with the value
+set using the :gid keyword."
+  :group 'org-export-twbs
+  :type 'string)
+
 
 ;;; Internal Functions
 
@@ -1210,7 +1231,6 @@ INFO is a plist used as a communication channel."
            (replace-regexp-in-string
             "\"" "&quot;" (org-twbs-encode-plain-text str))))
         (title (org-export-data (plist-get info :title) info))
-        (gid (plist-get info :gid))
         (author (and (plist-get info :with-author)
                      (let ((auth (plist-get info :author)))
                        (and auth
@@ -1259,17 +1279,7 @@ INFO is a plist used as a communication channel."
                                 (format "name=\"keywords\" content=\"%s\""
                                         (funcall protect-string keywords))
                                 info)
-            "\n"))
-      (when gid
-        (format "<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', '%s', 'auto');
-  ga('send', 'pageview');
-</script>\n" gid)))))
+            "\n")))))
 
 (defun org-twbs--build-head (info)
   "Return information for the <head>..</head> of the HTML output.
@@ -1461,6 +1471,10 @@ holding export options."
            (nth 1 (assq 'content org-twbs-divs)))
    ;; Postamble.
    (org-twbs--build-pre/postamble 'postamble info)
+   ;; Google Analytics
+   (let ((gid (plist-get info :gid)))
+     (when gid
+       (format org-twbs-google-analytics gid)))
    ;; Closing document.
    "</body>\n</html>"))
 
