@@ -185,8 +185,8 @@ html {
 }
 
 body {
-    font-size: 16px;
-    margin-bottom: 95px;
+    font-size: 18px;
+    margin-bottom: 105px;
 }
 
 footer {
@@ -204,6 +204,7 @@ footer > div {
 footer p {
     margin: 0 0 5px;
     text-align: center;
+    font-size: 16px;
 }
 
 #table-of-contents {
@@ -212,7 +213,7 @@ footer p {
 }
 
 blockquote p {
-    font-size: 16px;
+    font-size: 18px;
 }
 
 pre {
@@ -221,6 +222,13 @@ pre {
 
 .footpara {
     display: inline-block;
+}
+
+figcaption {
+  font-size: 16px;
+  color: #666;
+  font-style: italic;
+  padding-bottom: 15px;
 }
 
 /* from twbs docs */
