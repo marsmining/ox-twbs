@@ -800,7 +800,15 @@ You can also customize this for each buffer, using something like
                      (const :format "       " mathml) (boolean))))
 
 (defcustom org-twbs-mathjax-template
-  "<script type=\"text/javascript\" src=\"%PATH\"></script>"
+  "
+<script type=\"text/x-mathjax-config\">
+    MathJax.Hub.Config({
+        displayAlign: \"%ALIGN\",
+        displayIndent: \"%INDENT\",
+        \"HTML-CSS\": { scale: %SCALE }
+});
+</script>
+<script type=\"text/javascript\" src=\"%PATH\"></script>"
   "The MathJax setup for HTML files."
   :group 'org-export-twbs
   :type 'string)
