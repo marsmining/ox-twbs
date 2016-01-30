@@ -1236,6 +1236,7 @@ INFO is a plist used as a communication channel."
       (org-twbs-close-tag "meta" "charset=\"%s\"" info)
       charset) "\n"
       "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
+      "\n"
       (org-twbs-close-tag "meta" "name=\"generator\" content=\"Org-mode\"" info)
       "\n"
       (and (org-string-nw-p author)
