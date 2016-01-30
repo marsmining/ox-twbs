@@ -1304,6 +1304,8 @@ INFO is a plist used as a communication channel."
                           info))
     (when (plist-get info :html-head-include-default-style)
       (org-element-normalize-string org-twbs-style-default))
+    (when (not (plist-get info :html-postamble))
+      "<style>body { margin-bottom: 0px; }</style>")
     (when (plist-get info :html-head-include-scripts) org-twbs-scripts))))
 
 (defun org-twbs--build-mathjax-config (info)
