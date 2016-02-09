@@ -1316,7 +1316,6 @@ INFO is a plist used as a communication channel."
   (org-element-normalize-string
    (concat
     (org-element-normalize-string (plist-get info :html-head))
-    (org-element-normalize-string (plist-get info :html-head-extra))
     (when (and (plist-get info :html-htmlized-css-url)
                (eq org-twbs-htmlize-output-type 'css))
       (org-twbs-close-tag "link"
@@ -1327,7 +1326,8 @@ INFO is a plist used as a communication channel."
       (org-element-normalize-string org-twbs-style-default))
     (when (not (plist-get info :html-postamble))
       "<style>body { margin-bottom: 0px; }</style>")
-    (when (plist-get info :html-head-include-scripts) org-twbs-scripts))))
+    (when (plist-get info :html-head-include-scripts) org-twbs-scripts)
+    (org-element-normalize-string (plist-get info :html-head-extra)))))
 
 (defun org-twbs--build-mathjax-config (info)
   "Insert the user setup into the mathjax template.
