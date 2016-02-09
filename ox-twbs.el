@@ -123,6 +123,8 @@
     (:html-link-home "HTML_LINK_HOME" nil org-twbs-link-home)
     (:html-link-up "HTML_LINK_UP" nil org-twbs-link-up)
     (:html-mathjax "HTML_MATHJAX" nil "" space)
+    (:html-mathjax-options nil nil org-twbs-mathjax-options)
+    (:html-mathjax-template nil nil org-twbs-mathjax-template)
     (:html-postamble nil "html-postamble" org-twbs-postamble)
     (:html-preamble nil "html-preamble" org-twbs-preamble)
     (:html-head "HTML_HEAD" nil org-twbs-head newline)
@@ -162,7 +164,6 @@
 
 (defconst org-twbs-scripts
   "<script type=\"text/javascript\">
-
 $(function() {
     'use strict';
 
@@ -769,43 +770,55 @@ See `format-time-string' for more information on its components."
 (defcustom org-twbs-mathjax-options
   '((path  "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML")
     (scale "100")
+    (dscale "100")
     (align "center")
     (indent "2em")
-    (mathml nil))
+    (messages "none"))
   "Options for MathJax setup.
 
 path        The path where to find MathJax
-scale       Scaling for the HTML-CSS backend, usually between 100 and 133
+scale       Scaling for the HTML-CSS backend, omit percentage symbol
+dscale      Scaling for displayed math, omit percentage symbol
 align       How to align display math: left, center, or right
 indent      If align is not center, how far from the left/right side?
-mathml      Should a MathML player be used if available?
-            This is faster and reduces bandwidth use, but currently
-            sometimes has lower spacing quality.  Therefore, the default is
-            nil.  When browsers get better, this switch can be flipped.
+messages    Should display messages in corner?
 
 You can also customize this for each buffer, using something like
 
-#+MATHJAX: scale:\"133\" align:\"right\" mathml:t path:\"/MathJax/\""
+#+MATHJAX: scale:\"133\" align:\"right\" messages:t path:\"/MathJax/\""
   :group 'org-export-twbs
   :type '(list :greedy t
                (list :tag "path   (the path from where to load MathJax.js)"
                      (const :format "       " path) (string))
-               (list :tag "scale  (scaling for the displayed math)"
+               (list :tag "scale  (scaling for math)"
+                     (const :format "       " scale) (string))
+               (list :tag "dscale  (scaling for the displayed math)"
                      (const :format "       " scale) (string))
                (list :tag "align  (alignment of displayed equations)"
                      (const :format "       " align) (string))
                (list :tag "indent (indentation with left or right alignment)"
                      (const :format "       " indent) (string))
-               (list :tag "mathml (should MathML display be used is possible)"
-                     (const :format "       " mathml) (boolean))))
+               (list :tag "messages (show pocessing messages in corner)"
+                     (const :format "       " messages)
+                     (choice (const "none")
+			     (const "simple")))))
 
 (defcustom org-twbs-mathjax-template
   "
 <script type=\"text/x-mathjax-config\">
-    MathJax.Hub.Config({
-        displayAlign: \"%ALIGN\",
-        displayIndent: \"%INDENT\",
-        \"HTML-CSS\": { scale: %SCALE }
+MathJax.Hub.Config({
+  displayAlign: \"%ALIGN\",
+  displayIndent: \"%INDENT\",
+  messageStyle: \"%MESSAGES\",
+  \"HTML-CSS\": {
+    scale: %SCALE,
+    styles: {
+      \".MathJax_Display\": {
+        \"font-size\": \"%DSCALE%\",
+        \"margin-left\": \"-2.281em\"
+      }
+    }
+  }
 });
 </script>
 <script type=\"text/javascript\" src=\"%PATH\"></script>"
@@ -1322,33 +1335,19 @@ INFO is a plist used as a communication channel."
   (when (and (memq (plist-get info :with-latex) '(mathjax t))
              (org-element-map (plist-get info :parse-tree)
                  '(latex-fragment latex-environment) 'identity info t))
-    (let ((template org-twbs-mathjax-template)
-          (options org-twbs-mathjax-options)
-          (in-buffer (or (plist-get info :html-mathjax) ""))
-          name val (yes "   ") (no "// ") x)
-      (mapc
-       (lambda (e)
-         (setq name (car e) val (nth 1 e))
-         (if (string-match (concat "\\<" (symbol-name name) ":") in-buffer)
-             (setq val (car (read-from-string
-                             (substring in-buffer (match-end 0))))))
-         (if (not (stringp val)) (setq val (format "%s" val)))
-         (if (string-match (concat "%" (upcase (symbol-name name))) template)
-             (setq template (replace-match val t t template))))
-       options)
-      (setq val (nth 1 (assq 'mathml options)))
-      (if (string-match (concat "\\<mathml:") in-buffer)
-          (setq val (car (read-from-string
-                          (substring in-buffer (match-end 0))))))
-      ;; Exchange prefixes depending on mathml setting.
-      (if (not val) (setq x yes yes no no x))
-      ;; Replace cookies to turn on or off the config/jax lines.
-      (if (string-match ":MMLYES:" template)
-          (setq template (replace-match yes t t template)))
-      (if (string-match ":MMLNO:" template)
-          (setq template (replace-match no t t template)))
-      ;; Return the modified template.
-      (org-element-normalize-string template))))
+    (let ((template (plist-get info :html-mathjax-template))
+          (options (plist-get info :html-mathjax-options))
+          (in-buffer (or (plist-get info :html-mathjax) "")))
+      (dolist (e options (org-element-normalize-string template))
+        (let ((name (car e))
+              (val (nth 1 e)))
+          (when (string-match (concat "\\<" (symbol-name name) ":") in-buffer)
+            (setq val
+                  (car (read-from-string (substring in-buffer (match-end 0))))))
+          (unless (stringp val) (setq val (format "%s" val)))
+          (while (string-match (concat "%" (upcase (symbol-name name)))
+                               template)
+            (setq template (replace-match val t t template))))))))
 
 (defun org-twbs-format-spec (info)
   "Return format specification for elements that can be
