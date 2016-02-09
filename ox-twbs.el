@@ -885,7 +885,7 @@ like that: \"%%\"."
   :type 'string)
 
 (defcustom org-twbs-creator-string
-  (format "<a href=\"http://www.gnu.org/software/emacs/\">Emacs</a> %s (<a href=\"http://orgmode.org\">Org</a> mode %s)"
+  (format "<a href=\"http://www.gnu.org/software/emacs/\">Emacs</a> %s (<a href=\"http://orgmode.org\">Org-mode</a> %s)"
           emacs-version
           (if (fboundp 'org-version) (org-version) "unknown version"))
   "Information about the creator of the HTML document.
