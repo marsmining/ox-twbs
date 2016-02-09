@@ -801,7 +801,7 @@ You can also customize this for each buffer, using something like
                (list :tag "messages (show pocessing messages in corner)"
                      (const :format "       " messages)
                      (choice (const "none")
-			     (const "simple")))))
+                             (const "simple")))))
 
 (defcustom org-twbs-mathjax-template
   "
