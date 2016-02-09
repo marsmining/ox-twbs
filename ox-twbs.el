@@ -785,7 +785,7 @@ messages    Should display messages in corner?
 
 You can also customize this for each buffer, using something like
 
-#+MATHJAX: scale:\"133\" align:\"right\" messages:t path:\"/MathJax/\""
+#+HTML_MATHJAX: scale:110 dscale:190 align:left messages:none"
   :group 'org-export-twbs
   :type '(list :greedy t
                (list :tag "path   (the path from where to load MathJax.js)"
