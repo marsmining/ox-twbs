@@ -143,6 +143,8 @@
     ;; Extra Options
     (:gid nil "gid" nil)
     (:with-headline-numbers nil "whn" t)
+    (:with-toc-todo-keywords nil "toc-todo" nil)
+    (:with-toc-tags nil "toc-tag" nil)
     ;; Retrieve LaTeX header for fragments.
     (:latex-header "LATEX_HEADER" nil nil newline)))
 
@@ -700,6 +702,11 @@ Otherwise, place it near the end."
 
 ;;;; Tags
 
+(defcustom org-twbs-tag-class "badge"
+  "Class name for tags."
+  :group 'org-export-twbs
+  :type 'string)
+
 (defcustom org-twbs-tag-class-prefix ""
   "Prefix to class names for TODO keywords.
 Each tag gets a class given by the tag itself, with this prefix.
@@ -1045,6 +1052,18 @@ Each TODO keyword gets a class given by the keyword itself, with this prefix.
 The default prefix is empty because it is nice to just use the keyword
 as a class name.  But if you get into conflicts with other, existing
 CSS classes, then this prefix can be very useful."
+  :group 'org-export-twbs
+  :type 'string)
+
+(defcustom org-twbs-todo-kwd-class-undone "label-primary"
+  "Class name for TODO keywords which are not done.
+Traditionally this was not configurable, and was the value 'todo'."
+  :group 'org-export-twbs
+  :type 'string)
+
+(defcustom org-twbs-todo-kwd-class-done "label-default"
+  "Class name for TODO keywords which are done.
+Traditionally this was not configurable, and was the value 'done'."
   :group 'org-export-twbs
   :type 'string)
 
@@ -1515,10 +1534,15 @@ INFO is a plist used as a communication channel."
 (defun org-twbs--todo (todo)
   "Format TODO keywords into HTML."
   (when todo
-    (format "<span class=\"%s %s%s\">%s</span>"
-            (if (member todo org-done-keywords) "done" "todo")
-            org-twbs-todo-kwd-class-prefix (org-twbs-fix-class-name todo)
-            todo)))
+    (let* ((is-done (member todo org-done-keywords))
+           (class (if is-done org-twbs-todo-kwd-class-done
+                    org-twbs-todo-kwd-class-undone))
+           (is-label (string-prefix-p "label-" class)))
+      (format "<span class=\"%s%s %s%s\">%s</span>"
+              (if is-label "label " "")
+              class
+              org-twbs-todo-kwd-class-prefix (org-twbs-fix-class-name todo)
+              todo))))
 
 ;;;; Tags
 
@@ -1528,7 +1552,8 @@ INFO is a plist used as a communication channel."
     (format "<span class=\"tag\">%s</span>"
             (mapconcat
              (lambda (tag)
-               (format "<span class=\"%s\">%s</span>"
+               (format "<span class=\"%s %s\">%s</span>"
+                       org-twbs-tag-class
                        (concat org-twbs-tag-class-prefix
                                (org-twbs-fix-class-name tag))
                        tag))
@@ -1719,6 +1744,7 @@ and value is its relative level, as an integer."
 INFO is a plist used as a communication channel."
   (let* ((headline-number (org-export-get-headline-number headline info))
          (todo (and (plist-get info :with-todo-keywords)
+                    (plist-get info :with-toc-todo-keywords)
                     (let ((todo (org-element-property :todo-keyword headline)))
                       (and todo (org-export-data todo info)))))
          (todo-type (and todo (org-element-property :todo-type headline)))
@@ -1736,7 +1762,8 @@ INFO is a plist used as a communication channel."
                                 (radio-target . (lambda (object c i) c))
                                 (target . ignore)))
                 info))
-         (tags (and (eq (plist-get info :with-tags) t)
+         (tags (and (plist-get info :with-tags)
+                    (plist-get info :with-toc-tags)
                     (org-export-get-tags headline info))))
     (format "<a href=\"#%s\">%s</a>"
             ;; Label.
