@@ -1248,9 +1248,11 @@ Replaces invalid characters with \"_\"."
   "Signature change underneath us, released maybe with 8.3 commit URL at:
 http://orgmode.org/w/?p=org-mode.git;a=commit;h=014de0a532cbc60987d09d6040ed46195cffdf12
 Try the old 2-arity and if fails, try the new single-arity."
-  (condition-case nil
-      (org-export-collect-footnote-definitions (plist-get info :parse-tree) info)
-    (error (org-export-collect-footnote-definitions info))))
+  (with-no-warnings
+    (condition-case nil
+        (org-export-collect-footnote-definitions
+         (plist-get info :parse-tree) info)
+      (error (org-export-collect-footnote-definitions info)))))
 
 (defun org-twbs-footnote-section (info)
   "Format the footnote section.
@@ -1692,9 +1694,10 @@ a plist used as a communication channel."
   "Another arity change in org:
 http://orgmode.org/w/?p=org-mode.git;a=commit;h=b07e2f6ff1feddde83506b7fdb370bfe8e0a5337
 Try new 3-arity first, then old 2-arity."
-  (condition-case nil
-      (org-export-collect-headlines info depth scope)
-    (error (org-export-collect-headlines info depth))))
+  (with-no-warnings
+    (condition-case nil
+        (org-export-collect-headlines info depth scope)
+      (error (org-export-collect-headlines info depth)))))
 
 (defun org-twbs-toc (depth info &optional scope)
   "Build a table of contents.
@@ -2244,9 +2247,11 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
   "Arity fix for org-format-latex signature change here:
 http://orgmode.org/w/?p=org-mode.git;a=commit;h=8daf4a89f1a157c0ee2c91e5b990203679b31cf7
 Call 7-arity first, then 6-arity if first fails."
-  (condition-case nil
-      (org-format-latex prefix dir overlays msg at forbuffer processing-type)
-    (error (org-format-latex prefix dir overlays msg forbuffer processing-type))))
+  (with-no-warnings
+    (condition-case nil
+        (org-format-latex prefix dir overlays msg at forbuffer processing-type)
+      (error
+       (org-format-latex prefix dir overlays msg forbuffer processing-type)))))
 
 (defun org-twbs-format-latex (latex-frag processing-type info)
   "Format a LaTeX fragment LATEX-FRAG into HTML.
