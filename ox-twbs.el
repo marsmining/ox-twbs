@@ -1,14 +1,14 @@
 ;;; ox-twbs.el --- Bootstrap compatible HTML Back-End for Org
 
 ;; Copyright (C) 2011-2014 Free Software Foundation, Inc.
-;; Copyright (C) 2014 Brandon van Beekum
+;; Copyright (C) 2016 Brandon van Beekum
 
 ;; Author: Carsten Dominik <carsten at orgmode dot org>
 ;;         Jambunathan K <kjambunathan at gmail dot com>
 ;;         Brandon van Beekum <marsmining at gmail dot com>
 ;; URL: https://github.com/marsmining/ox-twbs
 ;; Keywords: org, html, publish, twitter, bootstrap
-;; Version: 1.0.5
+;; Version: 1.0.6
 
 ;; This file is not part of GNU Emacs.
 
