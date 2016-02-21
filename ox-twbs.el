@@ -117,7 +117,7 @@
                 (org-open-file (org-twbs-export-to-html nil s v b)))))))
   :options-alist
   '((:html-extension nil nil org-twbs-extension)
-    (:html-link-org-as-html nil nil org-twbs-link-org-files-as-html)
+    (:html-link-org-files-as-html nil nil org-twbs-link-org-files-as-html)
     (:html-container "HTML_CONTAINER" nil org-twbs-container-element)
     (:html-link-use-abs-url nil "html-link-use-abs-url" org-twbs-link-use-abs-url)
     (:html-link-home "HTML_LINK_HOME" nil org-twbs-link-home)
@@ -134,6 +134,7 @@
     (:html-table-attributes nil nil org-twbs-table-default-attributes)
     (:html-table-row-tags nil nil org-twbs-table-row-tags)
     (:html-inline-images nil nil org-twbs-inline-images)
+    (:html-inline-image-rules nil nil org-twbs-inline-image-rules)
     ;; Redefine regular options.
     (:creator "CREATOR" nil org-twbs-creator-string)
     (:with-latex nil "tex" org-twbs-with-latex)
@@ -2394,9 +2395,27 @@ images, set it to:
                info nil 'link)
              (= link-count 1))))))
 
+(defun org-twbs-export-file-uri (filename)
+  "Return file URI associated to FILENAME."
+  (cond ((org-string-match-p "\\`//" filename) (concat "file:" filename))
+        ((not (file-name-absolute-p filename)) filename)
+        ((org-file-remote-p filename) (concat "file:/" filename))
+        (t (concat "file://" (expand-file-name filename)))))
+
+(defun org-twbs-fuzzy (file search)
+  (cond ((fboundp 'org-publish-resolve-external-fuzzy-link)
+         (let ((numbers
+                (org-publish-resolve-external-fuzzy-link file search)))
+           (and numbers (concat "#sec-"
+                                (mapconcat 'number-to-string
+                                           numbers "-")))))
+        ((fboundp 'org-publish-resolve-external-link)
+         (let ((rez (org-publish-resolve-external-link search file)))
+           (concat "#" rez)))
+        (t "")))
+
 (defun org-twbs-link (link desc info)
   "Transcode a LINK object from Org to HTML.
-
 DESC is the description part of the link, or the empty string.
 INFO is a plist holding contextual information.  See
 `org-export-data'."
@@ -2404,17 +2423,16 @@ INFO is a plist holding contextual information.  See
                  (org-trim (plist-get info :html-link-home))))
          (use-abs-url (plist-get info :html-link-use-abs-url))
          (link-org-files-as-html-maybe
-          (function
-           (lambda (raw-path info)
-             "Treat links to `file.org' as links to `file.html', if needed.
-           See `org-twbs-link-org-files-as-html'."
-             (cond
-              ((and org-twbs-link-org-files-as-html
-                    (string= ".org"
-                             (downcase (file-name-extension raw-path "."))))
-               (concat (file-name-sans-extension raw-path) "."
-                       (plist-get info :html-extension)))
-              (t raw-path)))))
+          (lambda (raw-path info)
+            ;; Treat links to `file.org' as links to `file.html', if
+            ;; needed.  See `org-twbs-link-org-files-as-html'.
+            (cond
+             ((and (plist-get info :html-link-org-files-as-html)
+                   (string= ".org"
+                            (downcase (file-name-extension raw-path "."))))
+              (concat (file-name-sans-extension raw-path) "."
+                      (plist-get info :html-extension)))
+             (t raw-path))))
          (type (org-element-property :type link))
          (raw-path (org-element-property :path link))
          ;; Ensure DESC really exists, or set it to nil.
@@ -2430,30 +2448,25 @@ INFO is a plist holding contextual information.  See
             (setq raw-path
                   (funcall link-org-files-as-html-maybe raw-path info))
             ;; If file path is absolute, prepend it with protocol
-            ;; component - "file:".
+            ;; component - "file://".
             (cond
              ((file-name-absolute-p raw-path)
-              (setq raw-path (concat "file:" raw-path)))
+              (setq raw-path (org-twbs-export-file-uri raw-path)))
              ((and home use-abs-url)
               (setq raw-path (concat (file-name-as-directory home) raw-path))))
             ;; Add search option, if any.  A search option can be
-            ;; relative to a custom-id or a headline title.  Any other
-            ;; option is ignored.
+            ;; relative to a custom-id, a headline title a name,
+            ;; a target or a radio-target.
             (let ((option (org-element-property :search-option link)))
               (cond ((not option) raw-path)
-                    ((eq (aref option 0) ?#) (concat raw-path option))
-                    ;; External fuzzy link: try to resolve it if path
-                    ;; belongs to current project, if any.
-                    ((eq (aref option 0) ?*)
-                     (concat
-                      raw-path
-                      (let ((numbers
-                             (org-publish-resolve-external-fuzzy-link
-                              (org-element-property :path link) option)))
-                        (and numbers (concat "#sec-"
-                                             (mapconcat 'number-to-string
-                                                        numbers "-"))))))
-                    (t raw-path))))
+                    ;; Since HTML back-end use custom-id value as-is,
+                    ;; resolving is them is trivial.
+                    ((eq (string-to-char option) ?#) (concat raw-path option))
+                    (t
+                     (concat raw-path
+                             (org-twbs-fuzzy
+                              (org-element-property :path link)
+                              option))))))
            (t raw-path)))
          ;; Extract attributes from parent's paragraph.  HACK: Only do
          ;; this for the first link in parent (inner image link for
@@ -2470,12 +2483,12 @@ INFO is a plist holding contextual information.  See
                  (org-export-read-attribute :attr_html parent))))
          (attributes
           (let ((attr (org-twbs--make-attribute-string attributes-plist)))
-            (if (org-string-nw-p attr) (concat " " attr) "")))
-         protocol)
+            (if (org-string-nw-p attr) (concat " " attr) ""))))
     (cond
      ;; Image file.
-     ((and org-twbs-inline-images
-           (org-export-inline-image-p link org-twbs-inline-image-rules))
+     ((and (plist-get info :html-inline-images)
+           (org-export-inline-image-p
+            link (plist-get info :html-inline-image-rules)))
       (org-twbs--format-image path attributes-plist info))
      ;; Radio target: Transcode target's contents and use them as
      ;; link's description.
@@ -2556,24 +2569,23 @@ INFO is a plist holding contextual information.  See
      ;; Coderef: replace link with the reference name or the
      ;; equivalent line number.
      ((string= type "coderef")
-      (let ((fragment (concat "coderef-" path)))
+      (let ((fragment (concat "coderef-" (org-twbs-encode-plain-text path))))
         (format "<a href=\"#%s\"%s%s>%s</a>"
                 fragment
-                (org-trim
-                 (format (concat "class=\"coderef\""
-                                 " onmouseover=\"CodeHighlightOn(this, '%s');\""
-                                 " onmouseout=\"CodeHighlightOff(this, '%s');\"")
-                         fragment fragment))
+                (format "class=\"coderef\" onmouseover=\"CodeHighlightOn(this, \
+'%s');\" onmouseout=\"CodeHighlightOff(this, '%s');\""
+                        fragment fragment)
                 attributes
                 (format (org-export-get-coderef-format path desc)
                         (org-export-resolve-coderef path info)))))
-     ;; Link type is handled by a special function.
-     ((functionp (setq protocol (nth 2 (assoc type org-link-protocols))))
-      (funcall protocol (org-link-unescape path) desc 'html))
      ;; External link with a description part.
-     ((and path desc) (format "<a href=\"%s\"%s>%s</a>" path attributes desc))
+     ((and path desc) (format "<a href=\"%s\"%s>%s</a>"
+                              (org-twbs-encode-plain-text path)
+                              attributes
+                              desc))
      ;; External link without a description part.
-     (path (format "<a href=\"%s\"%s>%s</a>" path attributes path))
+     (path (let ((path (org-twbs-encode-plain-text path)))
+             (format "<a href=\"%s\"%s>%s</a>" path attributes path)))
      ;; No path, only description.  Try to do something useful.
      (t (format "<i>%s</i>" desc)))))
 
