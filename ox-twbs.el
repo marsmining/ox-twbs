@@ -8,7 +8,7 @@
 ;;         Brandon van Beekum <marsmining at gmail dot com>
 ;; URL: https://github.com/marsmining/ox-twbs
 ;; Keywords: org, html, publish, twitter, bootstrap
-;; Version: 1.0.7
+;; Version: 1.0.8
 
 ;; This file is not part of GNU Emacs.
 
@@ -1768,7 +1768,7 @@ INFO is a plist used as a communication channel."
                 ;; footnote-reference, link, radio-target and target
                 ;; in table of contents.
                 (org-export-create-backend
-                 :parent 'html
+                 :parent 'twbs
                  :transcoders '((footnote-reference . ignore)
                                 (link . (lambda (object c i) c))
                                 (radio-target . (lambda (object c i) c))
