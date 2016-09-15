@@ -8,7 +8,7 @@
 ;;         Brandon van Beekum <marsmining at gmail dot com>
 ;; URL: https://github.com/marsmining/ox-twbs
 ;; Keywords: org, html, publish, twitter, bootstrap
-;; Version: 1.0.9
+;; Version: 1.1.0
 
 ;; This file is not part of GNU Emacs.
 
@@ -2890,7 +2890,7 @@ channel."
           (if (not org-twbs-table-align-individual-fields) ""
             (format (if (and (boundp 'org-twbs-format-table-no-css)
                              org-twbs-format-table-no-css)
-                        " align=\"%s\"" " class=\"%s\"")
+                        " align=\"%s\"" " class=\"text-%s\"")
                     (org-export-table-cell-alignment table-cell info)))))
     (when (or (not contents) (string= "" (org-trim contents)))
       (setq contents "&#xa0;"))
