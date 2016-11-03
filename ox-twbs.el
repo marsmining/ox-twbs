@@ -8,7 +8,7 @@
 ;;         Brandon van Beekum <marsmining at gmail dot com>
 ;; URL: https://github.com/marsmining/ox-twbs
 ;; Keywords: org, html, publish, twitter, bootstrap
-;; Version: 1.1.0
+;; Version: 1.1.1
 
 ;; This file is not part of GNU Emacs.
 
@@ -105,7 +105,6 @@
     (underline . org-twbs-underline)
     (verbatim . org-twbs-verbatim)
     (verse-block . org-twbs-verse-block))
-  :export-block "HTML"
   :filters-alist '((:filter-final-output . org-twbs-final-function))
   :menu-entry
   '(?w "Export to TWBS HTML"
@@ -2453,7 +2452,7 @@ INFO is a plist holding contextual information.  See
            ((member type '("http" "https" "ftp" "mailto"))
             (org-link-escape
              (org-link-unescape
-              (concat type ":" raw-path)) org-link-escape-chars-browser))
+              (concat type ":" raw-path)) '(32 91 93 37)))
            ((string= type "file")
             ;; Treat links to ".org" files as ".html", if needed.
             (setq raw-path
