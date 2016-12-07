@@ -355,8 +355,8 @@ customize `org-twbs-head-include-default-style'.")
 ;;; User Configuration Variables
 
 (defgroup org-export-twbs nil
-  "Options for exporting Org mode files to HTML."
-  :tag "Org Export HTML"
+  "Options for exporting Org mode files to HTML compatible with Twitter's Bootstrap."
+  :tag "Org Export twbs"
   :group 'org-export)
 
 ;;;; Bold, etc.
