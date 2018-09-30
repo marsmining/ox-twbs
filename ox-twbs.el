@@ -105,7 +105,8 @@
     (underline . org-twbs-underline)
     (verbatim . org-twbs-verbatim)
     (verse-block . org-twbs-verse-block))
-  :filters-alist '((:filter-final-output . org-twbs-final-function))
+  :filters-alist '((:filter-parse-tree . org-twbs-image-link-filter)
+                   (:filter-final-output . org-twbs-final-function))
   :menu-entry
   '(?w "Export to TWBS HTML"
        ((?H "As HTML buffer" org-twbs-export-as-html)
@@ -2343,6 +2344,9 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
   (concat (org-twbs-close-tag "br" nil info) "\n"))
 
 ;;;; Link
+
+(defun org-twbs-image-link-filter (data _backend info)
+  (org-export-insert-image-links data info org-twbs-inline-image-rules))
 
 (defun org-twbs-inline-image-p (link info)
   "Non-nil when LINK is meant to appear as an image.
