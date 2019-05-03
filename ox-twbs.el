@@ -1498,20 +1498,20 @@ holding export options."
            (nth 3 (assq 'content org-twbs-divs)))
    ;; Main doc body twbs row
    "<div class=\"row\">"
-   (if (plist-get info :with-toc) "<div class=\"col-md-9\">"
+      ;; Table of contents.
+   (let ((depth (plist-get info :with-toc)))
+     (when depth
+       (concat
+        "<div class=\"col-md-3 col-md-push-9\">"
+        (org-twbs-toc depth info)
+        "</div>")))
+   (if (plist-get info :with-toc) "<div class=\"col-md-9 col-md-pull-3\">"
      "<div class=\"col-md-12\">")
    ;; Document title.
    (let ((title (plist-get info :title)))
      (format "<h1 class=\"title\">%s</h1>\n" (org-export-data (or title "") info)))
    contents
    "</div>"
-   ;; Table of contents.
-   (let ((depth (plist-get info :with-toc)))
-     (when depth
-       (concat
-        "<div class=\"col-md-3\">"
-        (org-twbs-toc depth info)
-        "</div>")))
    "</div>"
    (format "</%s>\n"
            (nth 1 (assq 'content org-twbs-divs)))
