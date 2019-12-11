@@ -7,6 +7,7 @@
 ;;         Jambunathan K <kjambunathan at gmail dot com>
 ;;         Brandon van Beekum <marsmining at gmail dot com>
 ;; URL: https://github.com/marsmining/ox-twbs
+;; Package-Version: 20161103.2016
 ;; Keywords: org, html, publish, twitter, bootstrap
 ;; Version: 1.1.1
 
@@ -2450,8 +2451,8 @@ INFO is a plist holding contextual information.  See
          (path
           (cond
            ((member type '("http" "https" "ftp" "mailto"))
-            (org-link-escape
-             (org-link-unescape
+            (org-link-encode
+             (org-link-decode
               (concat type ":" raw-path)) '(32 91 93 37)))
            ((string= type "file")
             ;; Treat links to ".org" files as ".html", if needed.
