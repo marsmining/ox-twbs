@@ -2453,12 +2453,12 @@ INFO is a plist holding contextual information.  See
             (with-no-warnings
               ;; handle changes in arity and naming between org 9.1 and 9.3
               (condition-case nil
-                  (org-link-escape
-                   (org-link-unescape
+                  (org-link-encode
+                   (org-link-decode
                     (concat type ":" raw-path)) '(32 91 93 37))
                 (error
-                 (org-link-encode
-                  (org-link-decode
+                 (org-link-escape
+                  (org-link-unescape
                    (concat type ":" raw-path)) '(32 91 93 37))))))
            ((string= type "file")
             ;; Treat links to ".org" files as ".html", if needed.
