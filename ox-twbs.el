@@ -165,7 +165,7 @@
   "Regular expressions for special string conversion.")
 
 (defconst org-twbs-scripts
-  "<script type=\"text/javascript\">
+  "<script>
 $(function() {
     'use strict';
 
@@ -179,7 +179,7 @@ $(function() {
   "Basic JavaScript that is needed by HTML files produced by Org mode.")
 
 (defconst org-twbs-style-default
-  "<style type=\"text/css\">
+  "<style>
 /* org mode styles on top of twbs */
 
 html {
@@ -836,7 +836,7 @@ MathJax.Hub.Config({
   }
 });
 </script>
-<script type=\"text/javascript\" src=\"%PATH\"></script>"
+<script src=\"%PATH\"></script>"
   "The MathJax setup for HTML files."
   :group 'org-export-twbs
   :type 'string)
