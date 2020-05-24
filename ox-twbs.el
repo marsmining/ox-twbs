@@ -1313,31 +1313,31 @@ INFO is a plist used as a communication channel."
      (format
       (org-twbs-close-tag "meta" "charset=\"%s\"" info)
       charset) "\n"
-      "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
-      "\n"
-      (org-twbs-close-tag "meta" "name=\"generator\" content=\"Org-mode\"" info)
-      "\n"
-      (and (org-string-nw-p author)
-           (concat
-            (org-twbs-close-tag "meta"
-                                (format "name=\"author\" content=\"%s\""
-                                        (funcall protect-string author))
-                                info)
-            "\n"))
-      (and (org-string-nw-p description)
-           (concat
-            (org-twbs-close-tag "meta"
-                                (format "name=\"description\" content=\"%s\"\n"
-                                        (funcall protect-string description))
-                                info)
-            "\n"))
-      (and (org-string-nw-p keywords)
-           (concat
-            (org-twbs-close-tag "meta"
-                                (format "name=\"keywords\" content=\"%s\""
-                                        (funcall protect-string keywords))
-                                info)
-            "\n")))))
+     "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
+     "\n"
+     (org-twbs-close-tag "meta" "name=\"generator\" content=\"Org-mode\"" info)
+     "\n"
+     (and (org-string-nw-p author)
+          (concat
+           (org-twbs-close-tag "meta"
+                               (format "name=\"author\" content=\"%s\""
+                                       (funcall protect-string author))
+                               info)
+           "\n"))
+     (and (org-string-nw-p description)
+          (concat
+           (org-twbs-close-tag "meta"
+                               (format "name=\"description\" content=\"%s\"\n"
+                                       (funcall protect-string description))
+                               info)
+           "\n"))
+     (and (org-string-nw-p keywords)
+          (concat
+           (org-twbs-close-tag "meta"
+                               (format "name=\"keywords\" content=\"%s\""
+                                       (funcall protect-string keywords))
+                               info)
+           "\n")))))
 
 (defun org-twbs--build-head (info)
   "Return information for the <head>..</head> of the HTML output.
@@ -1498,7 +1498,7 @@ holding export options."
            (nth 3 (assq 'content org-twbs-divs)))
    ;; Main doc body twbs row
    "<div class=\"row\">"
-      ;; Table of contents.
+   ;; Table of contents.
    (let ((depth (plist-get info :with-toc)))
      (when depth
        (concat
