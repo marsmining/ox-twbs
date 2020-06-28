@@ -1976,7 +1976,8 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
   (format "<pre class=\"example\">\n%s</pre>"
           (org-twbs-do-format-code
            (org-remove-indentation
-            (org-element-property :value fixed-width)))))
+            (org-trim
+             (org-element-property :value fixed-width))))))
 
 ;;;; Footnote Reference
 
