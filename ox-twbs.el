@@ -863,7 +863,7 @@ precedence over this variable."
                  (const :tag "Auto postamble" auto)
                  (const :tag "Default formatting string" t)
                  (string :tag "Custom formatting string")
-                 (function :tag "Function (must return a string)")))
+                 (cl-function :tag "Function (must return a string)")))
 
 (defcustom org-twbs-postamble-format
   '(("en" "<p class=\"author\">Author: %a (%e)</p>
@@ -930,7 +930,7 @@ precedence over this variable."
   :type '(choice (const :tag "No preamble" nil)
                  (const :tag "Default preamble" t)
                  (string :tag "Custom formatting string")
-                 (function :tag "Function (must return a string)")))
+                 (cl-function :tag "Function (must return a string)")))
 
 (defcustom org-twbs-preamble-format '(("en" ""))
   "Alist of languages and format strings for the HTML preamble.
@@ -1079,7 +1079,7 @@ Traditionally this was not configurable, and was the value 'done'."
 
 (defcustom org-twbs-google-analytics "
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (cl-function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
@@ -1267,7 +1267,7 @@ Try the old 2-arity and if fails, try the new single-arity."
 INFO is a plist used as a communication channel."
   (let* ((fn-alist (org-twbs-collect-footnote-definitions info))
          (fn-alist
-          (loop for (n type raw) in fn-alist collect
+          (cl-loop for (n type raw) in fn-alist collect
                 (cons n (if (eq (org-element-type raw) 'org-data)
                             (org-trim (org-export-data raw info))
                           (org-trim (org-export-data raw info)))))))
@@ -1592,11 +1592,11 @@ CODE is a string representing the source code to colorize.  LANG
 is the language used for CODE, as a string, or nil."
   (when code
     (cond
-     ;; Case 1: No lang.  Possibly an example block.
+     ;; Cl-Case 1: No lang.  Possibly an example block.
      ((not lang)
       ;; Simple transcoding.
       (org-twbs-encode-plain-text code))
-     ;; Case 2: No htmlize or an inferior version of htmlize
+     ;; Cl-Case 2: No htmlize or an inferior version of htmlize
      ((not (and (require 'htmlize nil t) (fboundp 'htmlize-region-for-paste)))
       ;; Emit a warning.
       (message "Cannot fontify src block (htmlize.el >= 1.34 required)")
@@ -1607,11 +1607,11 @@ is the language used for CODE, as a string, or nil."
       (setq lang (or (assoc-default lang org-src-lang-modes) lang))
       (let* ((lang-mode (and lang (intern (format "%s-mode" lang)))))
         (cond
-         ;; Case 1: Language is not associated with any Emacs mode
+         ;; Cl-Case 1: Language is not associated with any Emacs mode
          ((not (functionp lang-mode))
           ;; Simple transcoding.
           (org-twbs-encode-plain-text code))
-         ;; Case 2: Default.  Fontify code.
+         ;; Cl-Case 2: Default.  Fontify code.
          (t
           ;; htmlize
           (setq code (with-temp-buffer
@@ -1685,7 +1685,7 @@ a plist used as a communication channel."
          ;; Does the src block contain labels?
          (retain-labels (org-element-property :retain-labels element))
          ;; Does it have line numbers?
-         (num-start (case (org-element-property :number-lines element)
+         (num-start (cl-cl-case (org-element-property :number-lines element)
                       (continued (org-export-get-loc element info))
                       (new 0))))
     (org-twbs-do-format-code code lang refs retain-labels num-start)))
@@ -1821,10 +1821,10 @@ of listings as a string, or nil if it is empty."
                      (concat
                       "<li>"
                       (if (not label)
-                          (concat (format initial-fmt (incf count)) " " title)
+                          (concat (format initial-fmt (cl-incf count)) " " title)
                         (format "<a href=\"#%s\">%s %s</a>"
                                 label
-                                (format initial-fmt (incf count))
+                                (format initial-fmt (cl-incf count))
                                 title))
                       "</li>")))
                  lol-entries "\n"))
@@ -1856,10 +1856,10 @@ of tables as a string, or nil if it is empty."
                      (concat
                       "<li>"
                       (if (not label)
-                          (concat (format initial-fmt (incf count)) " " title)
+                          (concat (format initial-fmt (cl-incf count)) " " title)
                         (format "<a href=\"#%s\">%s %s</a>"
                                 label
-                                (format initial-fmt (incf count))
+                                (format initial-fmt (cl-incf count))
                                 title))
                       "</li>")))
                  lol-entries "\n"))
@@ -2150,7 +2150,7 @@ holding contextual information."
    ;; with appropriate arguments.
    ((not (eq org-twbs-format-inlinetask-function 'ignore))
     (let ((format-function
-           (function*
+           (cl-function*
             (lambda (todo todo-type priority text tags
                           &key contents &allow-other-keys)
               (funcall org-twbs-format-inlinetask-function
@@ -2175,7 +2175,7 @@ contextual information."
 
 (defun org-twbs-checkbox (checkbox)
   "Format CHECKBOX into HTML."
-  (case checkbox (on "<code>[X]</code>")
+  (cl-case checkbox (on "<code>[X]</code>")
         (off "<code>[&#xa0;]</code>")
         (trans "<code>[-]</code>")
         (t "")))
@@ -2187,7 +2187,7 @@ contextual information."
   (let ((checkbox (concat (org-twbs-checkbox checkbox) (and checkbox " ")))
         (br (org-twbs-close-tag "br" nil info)))
     (concat
-     (case type
+     (cl-case type
        (ordered
         (let* ((counter term-counter-id)
                (extra (if counter (format " value=\"%s\"" counter) "")))
@@ -2209,7 +2209,7 @@ contextual information."
                   "<dd>"))))
      (unless (eq type 'descriptive) checkbox)
      contents
-     (case type
+     (cl-case type
        (ordered "</li>")
        (unordered "</li>")
        (descriptive "</dd>")))))
@@ -2305,7 +2305,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
         (latex-frag (org-remove-indentation
                      (org-element-property :value latex-environment)))
         (attributes (org-export-read-attribute :attr_html latex-environment)))
-    (case processing-type
+    (cl-case processing-type
       ((t mathjax)
        (org-twbs-format-latex latex-frag 'mathjax info))
       ((dvipng imagemagick)
@@ -2326,7 +2326,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 CONTENTS is nil.  INFO is a plist holding contextual information."
   (let ((latex-frag (org-element-property :value latex-fragment))
         (processing-type (plist-get info :with-latex)))
-    (case processing-type
+    (cl-case processing-type
       ((t mathjax)
        (org-twbs-format-latex latex-frag 'mathjax info))
       ((dvipng imagemagick)
@@ -2358,10 +2358,10 @@ if its description is a single link targeting an image file."
        (org-element-map (org-element-contents link)
            (cons 'plain-text org-element-all-objects)
          (lambda (obj)
-           (case (org-element-type obj)
+           (cl-case (org-element-type obj)
              (plain-text (org-string-nw-p obj))
              (link (if (= link-count 1) t
-                     (incf link-count)
+                     (cl-incf link-count)
                      (not (org-export-inline-image-p
                            obj org-twbs-inline-image-rules))))
              (otherwise t)))
@@ -2386,7 +2386,7 @@ further.  For example, to check for only captioned standalone
 images, set it to:
 
   \(lambda (paragraph) (org-element-property :caption paragraph))"
-  (let ((paragraph (case (org-element-type element)
+  (let ((paragraph (cl-case (org-element-type element)
                      (paragraph element)
                      (link (org-export-get-parent element)))))
     (and (eq (org-element-type paragraph) 'paragraph)
@@ -2397,9 +2397,9 @@ images, set it to:
              (org-element-map (org-element-contents paragraph)
                  (cons 'plain-text org-element-all-objects)
                #'(lambda (obj)
-                   (when (case (org-element-type obj)
+                   (when (cl-case (org-element-type obj)
                            (plain-text (org-string-nw-p obj))
-                           (link (or (> (incf link-count) 1)
+                           (link (or (> (cl-incf link-count) 1)
                                      (not (org-twbs-inline-image-p obj info))))
                            (otherwise t))
                      (throw 'exit nil)))
@@ -2522,7 +2522,7 @@ INFO is a plist holding contextual information.  See
       (let ((destination (if (string= type "fuzzy")
                              (org-export-resolve-fuzzy-link link info)
                            (org-export-resolve-id-link link info))))
-        (case (org-element-type destination)
+        (cl-case (org-element-type destination)
           ;; ID link points to an external file.
           (plain-text
            (let ((fragment (concat "ID-" path))
@@ -2542,11 +2542,11 @@ INFO is a plist holding contextual information.  See
            (let ((href
                   ;; What href to use?
                   (cond
-                   ;; Case 1: Headline is linked via it's CUSTOM_ID
+                   ;; Cl-Case 1: Headline is linked via it's CUSTOM_ID
                    ;; property.  Use CUSTOM_ID.
                    ((string= type "custom-id")
                     (org-element-property :CUSTOM_ID destination))
-                   ;; Case 2: Headline is linked via it's ID property
+                   ;; Cl-Case 2: Headline is linked via it's ID property
                    ;; or through other means.  Use the default href.
                    ((member type '("id" "fuzzy"))
                     (format "sec-%s"
@@ -2652,7 +2652,7 @@ the plist used as a communication channel."
   "Insert the beginning of the HTML list depending on TYPE.
 When ARG1 is a string, use it as the start parameter for ordered
 lists."
-  (case type
+  (cl-case type
     (ordered
      (format "<ol class=\"org-ol\"%s>"
              (if arg1 (format " start=\"%d\"" arg1) "")))
@@ -2661,7 +2661,7 @@ lists."
 
 (defun org-twbs-end-plain-list (type)
   "Insert the end of the HTML list depending on TYPE."
-  (case type
+  (cl-case type
     (ordered "</ol>")
     (unordered "</ul>")
     (descriptive "</dl>")))
@@ -2937,14 +2937,14 @@ communication channel."
                               (equal end-rowgroup-p '(bottom above))))
            (rowgroup-tags
             (cond
-             ;; Case 1: Row belongs to second or subsequent rowgroups.
+             ;; Cl-Case 1: Row belongs to second or subsequent rowgroups.
              ((not (= 1 rowgroup-number))
               '("<tbody>" . "\n</tbody>"))
-             ;; Case 2: Row is from first rowgroup.  Table has >=1 rowgroups.
+             ;; Cl-Case 2: Row is from first rowgroup.  Table has >=1 rowgroups.
              ((org-export-table-has-header-p
                (org-export-get-parent-table table-row) info)
               '("<thead>" . "\n</thead>"))
-             ;; Case 2: Row is from first and only row group.
+             ;; Cl-Case 2: Row is from first and only row group.
              (t '("<tbody>" . "\n</tbody>")))))
       (concat
        ;; Begin a rowgroup?
@@ -2992,10 +2992,10 @@ INFO is a plist used as a communication channel."
   "Transcode a TABLE element from Org to HTML.
 CONTENTS is the contents of the table.  INFO is a plist holding
 contextual information."
-  (case (org-element-property :type table)
-    ;; Case 1: table.el table.  Convert it using appropriate tools.
+  (cl-case (org-element-property :type table)
+    ;; Cl-Case 1: table.el table.  Convert it using appropriate tools.
     (table.el (org-twbs-table--table.el-table table info))
-    ;; Case 2: Standard table.
+    ;; Cl-Case 2: Standard table.
     (t
      (let* ((label (org-element-property :name table))
             (caption (org-export-get-caption table))
@@ -3012,7 +3012,7 @@ contextual information."
                       org-twbs-format-table-no-css)
                  "align=\"%s\"" "class=\"%s\""))
             (table-column-specs
-             (function
+             (cl-function
               (lambda (table info)
                 (mapconcat
                  (lambda (table-cell)
